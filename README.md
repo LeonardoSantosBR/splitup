@@ -31,6 +31,9 @@ pnpm typecheck  # verifica TypeScript
 pnpm test       # testes unitários e de componentes
 pnpm test:e2e   # testes Playwright
 pnpm build      # build de produção
+pnpm prisma:validate # valida o schema Prisma
+pnpm prisma:generate # gera o cliente Prisma
+pnpm prisma:migrate  # cria/aplica uma migration local
 ```
 
 ## Estrutura
@@ -46,3 +49,13 @@ src/
 ```
 
 Valores monetários devem ser armazenados e calculados como inteiros em centavos. Consulte `AGENTS.md` para as regras completas do projeto.
+
+## Banco de dados
+
+Copie `.env.example` para `.env.local`, configure `DATABASE_URL` e execute:
+
+```bash
+pnpm prisma:validate
+pnpm prisma:generate
+pnpm prisma:migrate --name init
+```

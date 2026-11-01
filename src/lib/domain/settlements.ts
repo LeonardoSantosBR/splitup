@@ -8,7 +8,7 @@ export type Settlement = {
 };
 
 export function simplifyDebts(
-  balances: ReadonlyMap<string, Cents>
+  balances: ReadonlyMap<string, Cents>,
 ): Settlement[] {
   const creditors = [...balances.entries()]
     .filter(([, amount]) => amount > 0)
