@@ -3,9 +3,8 @@ import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import { prisma } from "@/lib/db/prisma";
 
-// Auth.js currently types its Prisma adapter against the legacy Prisma client shape.
 const adapter = PrismaAdapter(
-  prisma as unknown as Parameters<typeof PrismaAdapter>[0],
+  prisma as unknown as Parameters<typeof PrismaAdapter>[0]
 );
 
 export const { handlers, auth, signIn, signOut } = NextAuth({

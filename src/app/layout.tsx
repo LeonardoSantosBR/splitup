@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "SplitUp",
-  description: "group expense-sharing web app",
+  description: "Divida despesas com seu grupo de forma simples.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

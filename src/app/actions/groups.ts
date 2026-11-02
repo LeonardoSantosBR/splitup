@@ -15,7 +15,7 @@ import type { ActionResult } from "@/types/action-result";
 import type { GroupSummary } from "@/types/group";
 
 export async function createGroup(
-  input: unknown
+  input: unknown,
 ): Promise<ActionResult<GroupSummary>> {
   const parsed = createGroupSchema.safeParse(input);
   if (!parsed.success)
@@ -39,7 +39,7 @@ export async function createGroup(
 }
 
 export async function joinGroup(
-  input: unknown
+  input: unknown,
 ): Promise<ActionResult<GroupSummary>> {
   const parsed = joinGroupSchema.safeParse(input);
   if (!parsed.success)
