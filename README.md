@@ -50,6 +50,10 @@ src/
 
 Valores monetários devem ser armazenados e calculados como inteiros em centavos. Consulte `AGENTS.md` para as regras completas do projeto.
 
+## Autenticação
+
+O projeto usa Auth.js com Google OAuth. Configure `AUTH_SECRET`, `AUTH_GOOGLE_ID` e `AUTH_GOOGLE_SECRET` no `.env.local`. No Google Cloud Console, adicione `http://localhost:3000/api/auth/callback/google` como URI de redirecionamento durante o desenvolvimento.
+
 ## Banco de dados
 
 Copie `.env.example` para `.env.local`, configure `DATABASE_URL` e execute:
