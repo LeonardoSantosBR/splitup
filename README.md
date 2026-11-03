@@ -2,6 +2,8 @@
 
 Aplicação web para dividir despesas em grupos, acompanhar saldos e simplificar dívidas.
 
+<img width="494" height="505" alt="Image" src="https://github.com/user-attachments/assets/33dc97f3-e009-483f-aea6-48b15532ed0d" />
+
 ## Stack
 
 - Next.js com App Router, React e TypeScript strict
