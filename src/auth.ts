@@ -1,7 +1,7 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
-import { prisma } from "@/lib/db/prisma";
+import { prisma } from "@/utils/db/prisma";
 
 const adapter = PrismaAdapter(
   prisma as unknown as Parameters<typeof PrismaAdapter>[0]

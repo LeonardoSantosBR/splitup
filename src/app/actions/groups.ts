@@ -1,21 +1,21 @@
 "use server";
 
-import { checkUserSessionAuth } from "@/lib/auth/authorization";
-import { prisma } from "@/lib/db/prisma";
+import { checkUserSessionAuth } from "@/utils/auth/authorization";
+import { prisma } from "@/utils/db/prisma";
 import {
   errorMessage,
   toGroupSummary,
   validationErrors,
-} from "@/lib/functions/group-action-helpers";
+} from "@/utils/functions/group-action-helpers";
 import {
   createGroupSchema,
   joinGroupSchema,
-} from "@/lib/validation/group-schemas";
+} from "@/utils/validation/group-schemas";
 import type { ActionResult } from "@/types/action-result";
 import type { GroupSummary } from "@/types/group";
 
 export async function createGroup(
-  input: unknown,
+  input: unknown
 ): Promise<ActionResult<GroupSummary>> {
   const parsed = createGroupSchema.safeParse(input);
   if (!parsed.success)
@@ -39,7 +39,7 @@ export async function createGroup(
 }
 
 export async function joinGroup(
-  input: unknown,
+  input: unknown
 ): Promise<ActionResult<GroupSummary>> {
   const parsed = joinGroupSchema.safeParse(input);
   if (!parsed.success)

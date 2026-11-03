@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { prisma } from "@/lib/db/prisma";
+import { prisma } from "@/utils/db/prisma";
 import { ForbiddenError, UnauthorizedError } from "../../errors";
 
 export async function checkUserSessionAuth() {
