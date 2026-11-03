@@ -1,6 +1,6 @@
 import { ForbiddenError, UnauthorizedError } from "@/errors";
-import type { FieldErrors } from "@/types/action-result";
-import type { GroupSummary } from "@/types/group";
+import type { FieldErrors } from "@/types/action-result-props";
+import type { GroupSummaryProps } from "@/types/group-props";
 
 export function validationErrors(error: {
   flatten: () => { fieldErrors: FieldErrors };
@@ -20,7 +20,7 @@ export function toGroupSummary(group: {
   name: string;
   inviteToken: string;
   createdAt: Date;
-}): GroupSummary {
+}): GroupSummaryProps {
   return {
     id: group.id,
     name: group.name,

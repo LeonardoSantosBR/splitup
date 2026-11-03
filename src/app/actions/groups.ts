@@ -1,5 +1,7 @@
 "use server";
 
+import type { ActionResultProps } from "@/types/action-result-props";
+import type { GroupSummaryProps } from "@/types/group-props";
 import { checkUserSessionAuth } from "@/utils/auth/authorization";
 import { prisma } from "@/utils/db/prisma";
 import {
@@ -11,12 +13,10 @@ import {
   createGroupSchema,
   joinGroupSchema,
 } from "@/utils/validation/group-schemas";
-import type { ActionResult } from "@/types/action-result";
-import type { GroupSummary } from "@/types/group";
 
 export async function createGroup(
-  input: unknown
-): Promise<ActionResult<GroupSummary>> {
+  input: unknown,
+): Promise<ActionResultProps<GroupSummaryProps>> {
   const parsed = createGroupSchema.safeParse(input);
   if (!parsed.success)
     return { success: false, fieldErrors: validationErrors(parsed.error) };
@@ -39,8 +39,8 @@ export async function createGroup(
 }
 
 export async function joinGroup(
-  input: unknown
-): Promise<ActionResult<GroupSummary>> {
+  input: unknown,
+): Promise<ActionResultProps<GroupSummaryProps>> {
   const parsed = joinGroupSchema.safeParse(input);
   if (!parsed.success)
     return { success: false, fieldErrors: validationErrors(parsed.error) };
@@ -64,7 +64,9 @@ export async function joinGroup(
   }
 }
 
-export async function listUserGroups(): Promise<ActionResult<GroupSummary[]>> {
+export async function listUserGroups(): Promise<
+  ActionResultProps<GroupSummaryProps[]>
+> {
   try {
     const user = await checkUserSessionAuth();
     const memberships = await prisma.groupMember.findMany({

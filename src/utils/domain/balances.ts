@@ -1,7 +1,7 @@
 import type { Cents } from "./money";
 import { cents } from "./money";
 
-export type { Balance } from "@/types/balance";
+export type { BalanceProps } from "@/types/balance-props";
 
 export function calculateBalances(
   expenses: readonly { payerId: string; shares: ReadonlyMap<string, Cents> }[],

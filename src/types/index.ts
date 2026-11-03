@@ -1,3 +1,3 @@
-export * from "./action-result";
-export * from "./balance";
-export * from "./group";
+export * from "./action-result-props";
+export * from "./balance-props";
+export * from "./group-props";

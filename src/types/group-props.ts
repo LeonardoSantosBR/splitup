@@ -1,4 +1,4 @@
-export type GroupSummary = {
+export type GroupSummaryProps = {
   id: string;
   name: string;
   inviteToken: string;
