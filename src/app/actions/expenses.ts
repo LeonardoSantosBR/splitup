@@ -2,6 +2,7 @@
 
 import { errorMessage, validationErrors } from "@/errors";
 import type { ActionResultProps } from "@/types/action-result-props";
+import type { ExpenseSummaryProps } from "@/types/expense-summary-props";
 import { checkUserGroupMember } from "@/utils/auth/authorization";
 import { prisma } from "@/utils/db/prisma";
 import { splitEqually } from "@/utils/domain/splits";
@@ -10,7 +11,7 @@ import { createExpenseSchema } from "@/utils/schemas/expense-schemas";
 
 export async function createExpense(
   input: unknown,
-): Promise<ActionResultProps<{ id: string }>> {
+): Promise<ActionResultProps<ExpenseSummaryProps>> {
   const parsed = createExpenseSchema.safeParse(input);
   if (!parsed.success)
     return { success: false, fieldErrors: validationErrors(parsed.error) };
@@ -20,7 +21,7 @@ export async function createExpense(
     const amount = parseAmountToCents(parsed.data.amount);
     const group = await prisma.group.findUnique({
       where: { id: groupId },
-      include: { members: true },
+      include: { members: { include: { user: true } } },
     });
     if (
       !group ||
@@ -53,7 +54,19 @@ export async function createExpense(
         },
       },
     });
-    return { success: true, data: { id: expense.id } };
+    const payer = group.members.find(
+      (member) => member.userId === expense.payerId,
+    );
+    return {
+      success: true,
+      data: {
+        id: expense.id,
+        description: expense.description,
+        amountCents: expense.amountCents,
+        payerName: payer?.user.name ?? payer?.user.email ?? "Membro",
+        occurredAt: expense.occurredAt.toISOString(),
+      },
+    };
   } catch (error) {
     return {
       success: false,

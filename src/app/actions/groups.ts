@@ -12,7 +12,7 @@ import {
 } from "@/utils/schemas/group-schemas";
 
 export async function createGroup(
-  input: unknown
+  input: unknown,
 ): Promise<ActionResultProps<GroupSummaryProps>> {
   const parsed = createGroupSchema.safeParse(input);
   if (!parsed.success)
@@ -39,7 +39,7 @@ export async function createGroup(
 }
 
 export async function joinGroup(
-  input: unknown
+  input: unknown,
 ): Promise<ActionResultProps<GroupSummaryProps>> {
   const parsed = joinGroupSchema.safeParse(input);
   if (!parsed.success)

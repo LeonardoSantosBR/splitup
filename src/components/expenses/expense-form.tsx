@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import { createExpense } from "@/app/actions/expenses";
 import type { ExpenseFormProps } from "@/types/expense-form-props";
 
-export function ExpenseForm({ groupId, members }: ExpenseFormProps) {
+export function ExpenseForm({ groupId, members, onCreated }: ExpenseFormProps) {
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
   const [payerId, setPayerId] = useState(members[0]?.id ?? "");
@@ -35,6 +35,7 @@ export function ExpenseForm({ groupId, members }: ExpenseFormProps) {
       setDescription("");
       setAmount("");
       setMessage("Despesa adicionada.");
+      onCreated?.(result.data);
     });
   }
   function toggleParticipant(id: string) {
