@@ -1,8 +1,5 @@
+import { LoginFormProps } from "@/types";
 import { FcGoogle } from "react-icons/fc";
-
-type LoginFormProps = {
-  signInAction: () => Promise<void>;
-};
 
 export function LoginForm({ signInAction }: LoginFormProps) {
   return (

@@ -39,7 +39,7 @@ export function GroupActionCards({
           id="group-name"
           value={groupName}
           onChange={(event) => onGroupNameChange(event.target.value)}
-          placeholder="Ex.: Viagem para Floripa"
+          placeholder="Ex.: Viagem para Madrid"
           className="mt-2 w-full rounded-xl border-0 bg-white px-4 py-3 text-foreground outline-none placeholder:text-(--slate) focus:ring-4 focus:ring-(--primary)/30"
           disabled={isPending}
         />
