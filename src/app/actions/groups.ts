@@ -1,21 +1,18 @@
 "use server";
 
+import { errorMessage, validationErrors } from "@/errors";
 import type { ActionResultProps } from "@/types/action-result-props";
 import type { GroupSummaryProps } from "@/types/group-props";
 import { checkUserSessionAuth } from "@/utils/auth/authorization";
 import { prisma } from "@/utils/db/prisma";
-import {
-  errorMessage,
-  toGroupSummary,
-  validationErrors,
-} from "@/utils/functions/group-action-helpers";
+import { toGroupSummary } from "@/utils/helpers/to-group-summary-helper";
 import {
   createGroupSchema,
   joinGroupSchema,
-} from "@/utils/validation/group-schemas";
+} from "@/utils/schemas/group-schemas";
 
 export async function createGroup(
-  input: unknown,
+  input: unknown
 ): Promise<ActionResultProps<GroupSummaryProps>> {
   const parsed = createGroupSchema.safeParse(input);
   if (!parsed.success)
@@ -34,12 +31,15 @@ export async function createGroup(
     });
     return { success: true, data: toGroupSummary(group) };
   } catch (error) {
-    return { success: false, formError: errorMessage(error) };
+    return {
+      success: false,
+      formError: errorMessage(error, "Não foi possível criar o grupo."),
+    };
   }
 }
 
 export async function joinGroup(
-  input: unknown,
+  input: unknown
 ): Promise<ActionResultProps<GroupSummaryProps>> {
   const parsed = joinGroupSchema.safeParse(input);
   if (!parsed.success)
@@ -51,7 +51,7 @@ export async function joinGroup(
       where: { inviteToken: parsed.data.inviteToken },
     });
     if (!group)
-      return { success: false, formError: "Invalid or expired invitation." };
+      return { success: false, formError: "Convite inválido ou expirado." };
 
     await prisma.groupMember.upsert({
       where: { groupId_userId: { groupId: group.id, userId: user.id } },
@@ -60,7 +60,10 @@ export async function joinGroup(
     });
     return { success: true, data: toGroupSummary(group) };
   } catch (error) {
-    return { success: false, formError: errorMessage(error) };
+    return {
+      success: false,
+      formError: errorMessage(error, "Não foi possível entrar no grupo."),
+    };
   }
 }
 
@@ -79,6 +82,9 @@ export async function listUserGroups(): Promise<
       data: memberships.map(({ group }) => toGroupSummary(group)),
     };
   } catch (error) {
-    return { success: false, formError: errorMessage(error) };
+    return {
+      success: false,
+      formError: errorMessage(error, "Não foi possível carregar seus grupos."),
+    };
   }
 }

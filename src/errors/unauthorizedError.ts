@@ -1,6 +1,6 @@
 export class UnauthorizedError extends Error {
   constructor() {
-    super("Authentication is required");
+    super("É necessária autenticação.");
     this.name = "UnauthorizedError";
   }
 }

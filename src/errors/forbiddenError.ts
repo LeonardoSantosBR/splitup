@@ -1,6 +1,6 @@
 export class ForbiddenError extends Error {
   constructor() {
-    super("You do not have access to this group");
+    super("Você não tem acesso a este grupo");
     this.name = "ForbiddenError";
   }
 }
