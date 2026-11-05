@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { listUserGroups } from "@/app/actions/groups";
 import { verifyUserSession } from "@/utils/helpers";
-import { GroupsDashboard } from "./groups-dashboard";
+import { Home } from "./home";
 
 export const dynamic = "force-dynamic";
 
@@ -12,9 +12,6 @@ export default async function GroupsPage() {
   if (!result.success) redirect("/login");
 
   return (
-    <GroupsDashboard
-      initialGroups={result.data}
-      userName={session?.user?.name ?? ""}
-    />
+    <Home initialGroups={result.data} userName={session?.user?.name ?? ""} />
   );
 }

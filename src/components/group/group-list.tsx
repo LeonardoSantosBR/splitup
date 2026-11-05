@@ -25,7 +25,7 @@ export function GroupList({ groups, onCopyInvite }: GroupListProps) {
             >
               <div className="flex items-start justify-between gap-3">
                 <Link
-                  href={`/groups/${group.id}`}
+                  href={`/home/${group.id}`}
                   className="font-bold text-foreground hover:text-(--primary)"
                 >
                   {group.name}
@@ -33,7 +33,7 @@ export function GroupList({ groups, onCopyInvite }: GroupListProps) {
                 <span className="h-3 w-3 rounded-full bg-(--primary)" />
               </div>
               <Link
-                href={`/groups/${group.id}`}
+                href={`/home/${group.id}`}
                 className="mt-3 block text-xs text-(--slate)"
               >
                 Criado em{" "}

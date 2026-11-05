@@ -29,12 +29,12 @@ export default async function GroupPage({
     },
   });
 
-  if (!group) redirect("/groups");
+  if (!group) redirect("/home");
 
   return (
     <main className="min-h-screen bg-background px-6 py-10">
       <div className="mx-auto max-w-5xl">
-        <a href="/groups" className="text-sm font-semibold text-(--primary)">
+        <a href="/home" className="text-sm font-semibold text-(--primary)">
           ← Voltar para grupos
         </a>
         <h1 className="mt-5 text-4xl font-bold text-foreground">

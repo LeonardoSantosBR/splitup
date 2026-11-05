@@ -8,14 +8,11 @@ import {
   GroupActionCards,
   GroupList,
   GroupHeader,
-} from "@/components/groups";
+} from "@/components/group";
 import type { GroupDashboardProps } from "@/types";
 import { clearMessages, copyInvite } from "@/utils/functions";
 
-export function GroupsDashboard({
-  initialGroups,
-  userName,
-}: GroupDashboardProps) {
+export function Home({ initialGroups, userName }: GroupDashboardProps) {
   const [groups, setGroups] = useState(initialGroups);
   const [groupName, setGroupName] = useState("");
   const [inviteToken, setInviteToken] = useState("");
