@@ -2,7 +2,7 @@
 
 type GroupsHeaderProps = { userName: string; onSignOut: () => void };
 
-export function GroupsHeader({ userName, onSignOut }: GroupsHeaderProps) {
+export function GroupHeader({ userName, onSignOut }: GroupsHeaderProps) {
   return (
     <header className="border-b border-(--slate)/20 bg-white">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">

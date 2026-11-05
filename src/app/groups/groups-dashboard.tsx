@@ -7,7 +7,7 @@ import {
   FeedbackMessage,
   GroupActionCards,
   GroupList,
-  GroupsHeader,
+  GroupHeader,
 } from "@/components/groups";
 import type { GroupDashboardProps } from "@/types";
 import { clearMessages, copyInvite } from "@/utils/functions";
@@ -67,7 +67,7 @@ export function GroupsDashboard({
 
   return (
     <main className="min-h-screen bg-background">
-      <GroupsHeader
+      <GroupHeader
         userName={userName}
         onSignOut={() => signOut({ callbackUrl: "/login" })}
       />
