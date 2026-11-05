@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { GroupExpenses } from "@/components/expenses";
-import { checkUserGroupMember } from "@/utils/auth/authorization";
-import { prisma } from "@/utils/db/prisma";
+import { checkUserGroupMember } from "@/utils/auth/authorization-auth";
+import { prisma } from "@/utils/db/prisma-db";
 import { verifyUserSession } from "@/utils/helpers";
 
 export const dynamic = "force-dynamic";

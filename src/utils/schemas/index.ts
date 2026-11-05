@@ -1,2 +1,2 @@
-export * from "./expense-schemas";
-export * from "./group-schemas";
+export * from "./expense-schema";
+export * from "./group-schema";

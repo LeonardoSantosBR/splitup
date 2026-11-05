@@ -1,5 +1,4 @@
-import { ForbiddenError } from "./forbiddenError";
-import { UnauthorizedError } from "./unauthorizedError";
+import { ForbiddenError, UnauthorizedError } from "@/errors";
 
 export function errorMessage(error: unknown, message: string): string {
   if (error instanceof UnauthorizedError) return message;

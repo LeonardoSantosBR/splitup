@@ -1,17 +1,17 @@
 import { describe, expect, it } from "vitest";
-import { assertBalancesSumToZero, calculateBalances } from "./balances";
-import { cents } from "./money";
-import { simplifyDebts } from "./settlements";
+import { assertBalancesSumToZero, calculateBalances } from "./balances-domain";
+import { cents } from "./money-domain";
+import { simplifyDebts } from "./settlements-domain";
 import {
   splitByExactAmounts,
   splitByPercentages,
   splitEqually,
-} from "./splits";
+} from "./splits-domain";
 
 describe("splitEqually", () => {
   it("distributes leftover cents in stable participant order", () => {
     expect(
-      [...splitEqually(cents(100), ["a", "b", "c"])].map(([, value]) => value),
+      [...splitEqually(cents(100), ["a", "b", "c"])].map(([, value]) => value)
     ).toEqual([34, 33, 33]);
   });
 
@@ -24,8 +24,8 @@ describe("splitEqually", () => {
     expect(
       splitEqually(
         cents(1000),
-        Array.from({ length: 100 }, (_, index) => String(index)),
-      ).size,
+        Array.from({ length: 100 }, (_, index) => String(index))
+      ).size
     ).toBe(100);
   });
 });
@@ -39,18 +39,18 @@ describe("percentage and exact splits", () => {
           new Map([
             ["a", 50],
             ["b", 50],
-          ]),
+          ])
         ),
-      ].map(([, value]) => value),
+      ].map(([, value]) => value)
     ).toEqual([51, 50]);
   });
 
   it("validates percentage and exact totals", () => {
     expect(() =>
-      splitByPercentages(cents(100), new Map([["a", 30]])),
+      splitByPercentages(cents(100), new Map([["a", 30]]))
     ).toThrow();
     expect(() =>
-      splitByExactAmounts(cents(100), new Map([["a", cents(99)]])),
+      splitByExactAmounts(cents(100), new Map([["a", cents(99)]]))
     ).toThrow();
     expect(
       [
@@ -59,9 +59,9 @@ describe("percentage and exact splits", () => {
           new Map([
             ["a", cents(40)],
             ["b", cents(60)],
-          ]),
+          ])
         ),
-      ].map(([, value]) => value),
+      ].map(([, value]) => value)
     ).toEqual([40, 60]);
   });
 });
@@ -93,8 +93,8 @@ describe("simplifyDebts", () => {
           ["a", cents(100)],
           ["b", cents(-70)],
           ["c", cents(-30)],
-        ]),
-      ),
+        ])
+      )
     ).toEqual([
       { fromMemberId: "b", toMemberId: "a", amount: 70 },
       { fromMemberId: "c", toMemberId: "a", amount: 30 },
