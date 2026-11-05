@@ -12,7 +12,7 @@ import {
 import type { GroupDashboardProps } from "@/types";
 import { clearMessages, copyInvite } from "@/utils/functions";
 
-export function Home({ initialGroups, userName }: GroupDashboardProps) {
+export function HomeActions({ initialGroups, userName }: GroupDashboardProps) {
   const [groups, setGroups] = useState(initialGroups);
   const [groupName, setGroupName] = useState("");
   const [inviteToken, setInviteToken] = useState("");
