@@ -2,7 +2,10 @@
 
 import { errorMessage, validationErrors } from "@/errors";
 import type { ActionResultProps } from "@/types/action-result-props";
-import type { ExpenseSummaryProps } from "@/types/expense-summary-props";
+import type {
+  ExpensePageProps,
+  ExpenseSummaryProps,
+} from "@/types/expense-summary-props";
 import { checkUserGroupMember } from "@/utils/auth/authorization";
 import { prisma } from "@/utils/db/prisma";
 import { splitEqually } from "@/utils/domain/splits";
@@ -71,6 +74,46 @@ export async function createExpense(
     return {
       success: false,
       formError: errorMessage(error, "Não foi possível criar a despesa."),
+    };
+  }
+}
+
+export async function listGroupExpenses(
+  groupId: string,
+  page = 1,
+): Promise<ActionResultProps<ExpensePageProps>> {
+  try {
+    await checkUserGroupMember(groupId);
+    const pageSize = 5;
+    const safePage = Math.max(1, Math.floor(page));
+    const [total, expenses] = await prisma.$transaction([
+      prisma.expense.count({ where: { groupId } }),
+      prisma.expense.findMany({
+        where: { groupId },
+        include: { payer: true },
+        orderBy: { occurredAt: "desc" },
+        skip: (safePage - 1) * pageSize,
+        take: pageSize,
+      }),
+    ]);
+    return {
+      success: true,
+      data: {
+        page: safePage,
+        totalPages: Math.max(1, Math.ceil(total / pageSize)),
+        items: expenses.map((expense) => ({
+          id: expense.id,
+          description: expense.description,
+          amountCents: expense.amountCents,
+          payerName: expense.payer.name ?? expense.payer.email ?? "Membro",
+          occurredAt: expense.occurredAt.toISOString(),
+        })),
+      },
+    };
+  } catch (error) {
+    return {
+      success: false,
+      formError: errorMessage(error, "Não foi possível carregar as despesas."),
     };
   }
 }

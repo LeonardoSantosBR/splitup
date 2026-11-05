@@ -5,3 +5,9 @@ export type ExpenseSummaryProps = {
   payerName: string;
   occurredAt: string;
 };
+
+export type ExpensePageProps = {
+  items: ExpenseSummaryProps[];
+  page: number;
+  totalPages: number;
+};

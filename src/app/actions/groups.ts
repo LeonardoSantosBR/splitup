@@ -2,7 +2,7 @@
 
 import { errorMessage, validationErrors } from "@/errors";
 import type { ActionResultProps } from "@/types/action-result-props";
-import type { GroupSummaryProps } from "@/types/group-props";
+import type { GroupSummaryProps } from "@/types/group/group-props";
 import { checkUserSessionAuth } from "@/utils/auth/authorization";
 import { prisma } from "@/utils/db/prisma";
 import { toGroupSummary } from "@/utils/helpers/to-group-summary-helper";
@@ -12,7 +12,7 @@ import {
 } from "@/utils/schemas/group-schemas";
 
 export async function createGroup(
-  input: unknown,
+  input: unknown
 ): Promise<ActionResultProps<GroupSummaryProps>> {
   const parsed = createGroupSchema.safeParse(input);
   if (!parsed.success)
@@ -39,7 +39,7 @@ export async function createGroup(
 }
 
 export async function joinGroup(
-  input: unknown,
+  input: unknown
 ): Promise<ActionResultProps<GroupSummaryProps>> {
   const parsed = joinGroupSchema.safeParse(input);
   if (!parsed.success)

@@ -1,23 +1,41 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { listGroupExpenses } from "@/app/actions/expenses";
 import { ExpenseForm } from "@/components/expenses/expense-form";
-import { GroupExpensesProps } from "@/types";
+import type { GroupExpensesProps } from "@/types";
 
 export function GroupExpenses({
   groupId,
   members,
   initialExpenses,
+  initialTotalPages,
 }: GroupExpensesProps) {
   const [expenses, setExpenses] = useState(initialExpenses);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(initialTotalPages);
+  const [isPending, startTransition] = useTransition();
+
+  function changePage(nextPage: number) {
+    startTransition(async () => {
+      const result = await listGroupExpenses(groupId, nextPage);
+      if (result.success) {
+        setExpenses(result.data.items);
+        setPage(result.data.page);
+        setTotalPages(result.data.totalPages);
+      }
+    });
+  }
+
   return (
     <div className="mt-8 grid gap-6 lg:grid-cols-[360px_1fr]">
       <ExpenseForm
         groupId={groupId}
         members={members}
-        onCreated={(expense) =>
-          setExpenses((current) => [expense, ...current].slice(0, 20))
-        }
+        onCreated={(expense) => {
+          setExpenses((current) => [expense, ...current].slice(0, 5));
+          setPage(1);
+        }}
       />
       <section>
         <h2 className="text-xl font-bold text-foreground">Despesas recentes</h2>
@@ -50,6 +68,29 @@ export function GroupExpenses({
                 </div>
               </article>
             ))}
+          </div>
+        )}
+        {totalPages > 1 && (
+          <div className="mt-5 flex items-center justify-between">
+            <button
+              type="button"
+              disabled={page === 1 || isPending}
+              onClick={() => changePage(page - 1)}
+              className="rounded-lg border border-(--slate)/30 bg-white px-3 py-2 text-sm font-semibold text-foreground disabled:opacity-40"
+            >
+              Anterior
+            </button>
+            <span className="text-sm text-(--dark-teal)">
+              Página {page} de {totalPages}
+            </span>
+            <button
+              type="button"
+              disabled={page === totalPages || isPending}
+              onClick={() => changePage(page + 1)}
+              className="rounded-lg border border-(--slate)/30 bg-white px-3 py-2 text-sm font-semibold text-foreground disabled:opacity-40"
+            >
+              Próxima
+            </button>
           </div>
         )}
       </section>

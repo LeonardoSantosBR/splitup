@@ -1,11 +1,7 @@
 "use client";
 
-import type { GroupSummaryProps } from "@/types/group-props";
-
-type GroupListProps = {
-  groups: GroupSummaryProps[];
-  onCopyInvite: (group: GroupSummaryProps) => void;
-};
+import Link from "next/link";
+import { GroupListProps } from "@/types";
 
 export function GroupList({ groups, onCopyInvite }: GroupListProps) {
   return (
@@ -28,15 +24,23 @@ export function GroupList({ groups, onCopyInvite }: GroupListProps) {
               className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-(--slate)/15"
             >
               <div className="flex items-start justify-between gap-3">
-                <h3 className="font-bold text-foreground">{group.name}</h3>
+                <Link
+                  href={`/groups/${group.id}`}
+                  className="font-bold text-foreground hover:text-(--primary)"
+                >
+                  {group.name}
+                </Link>
                 <span className="h-3 w-3 rounded-full bg-(--primary)" />
               </div>
-              <p className="mt-3 text-xs text-(--slate)">
+              <Link
+                href={`/groups/${group.id}`}
+                className="mt-3 block text-xs text-(--slate)"
+              >
                 Criado em{" "}
                 {new Intl.DateTimeFormat("pt-BR").format(
-                  new Date(group.createdAt),
+                  new Date(group.createdAt)
                 )}
-              </p>
+              </Link>
               <button
                 type="button"
                 onClick={() => onCopyInvite(group)}

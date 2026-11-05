@@ -9,17 +9,13 @@ import {
   GroupList,
   GroupsHeader,
 } from "@/components/groups";
-import type { GroupSummaryProps } from "@/types/group-props";
-
-type GroupsDashboardProps = {
-  initialGroups: GroupSummaryProps[];
-  userName: string;
-};
+import type { GroupDashboardProps } from "@/types";
+import { clearMessages, copyInvite } from "@/utils/functions";
 
 export function GroupsDashboard({
   initialGroups,
   userName,
-}: GroupsDashboardProps) {
+}: GroupDashboardProps) {
   const [groups, setGroups] = useState(initialGroups);
   const [groupName, setGroupName] = useState("");
   const [inviteToken, setInviteToken] = useState("");
@@ -27,21 +23,16 @@ export function GroupsDashboard({
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
-  function clearMessages() {
-    setFeedback(null);
-    setError(null);
-  }
-
   function handleCreate(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    clearMessages();
+    clearMessages(setFeedback, setError);
     startTransition(async () => {
       const result = await createGroup({ name: groupName });
       if (!result.success) {
         setError(
           result.fieldErrors?.name?.[0] ??
             result.formError ??
-            "Não foi possível criar o grupo.",
+            "Não foi possível criar o grupo."
         );
         return;
       }
@@ -53,33 +44,25 @@ export function GroupsDashboard({
 
   function handleJoin(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    clearMessages();
+    clearMessages(setFeedback, setError);
     startTransition(async () => {
       const result = await joinGroup({ inviteToken });
       if (!result.success) {
         setError(
           result.fieldErrors?.inviteToken?.[0] ??
             result.formError ??
-            "Não foi possível entrar no grupo.",
+            "Não foi possível entrar no grupo."
         );
         return;
       }
       setGroups((current) =>
         current.some((group) => group.id === result.data.id)
           ? current
-          : [result.data, ...current],
+          : [result.data, ...current]
       );
       setInviteToken("");
       setFeedback(`Você entrou em “${result.data.name}”.`);
     });
-  }
-
-  async function copyInvite(group: GroupSummaryProps) {
-    await navigator.clipboard.writeText(
-      `${window.location.origin}/groups?invite=${group.inviteToken}`,
-    );
-    setError(null);
-    setFeedback("Link de convite copiado.");
   }
 
   return (
@@ -110,7 +93,10 @@ export function GroupsDashboard({
           onCreate={handleCreate}
           onJoin={handleJoin}
         />
-        <GroupList groups={groups} onCopyInvite={copyInvite} />
+        <GroupList
+          groups={groups}
+          onCopyInvite={(group) => copyInvite(setError, setFeedback, group)}
+        />
       </div>
     </main>
   );

@@ -1,4 +1,4 @@
-import type { GroupSummaryProps } from "@/types/group-props";
+import type { GroupSummaryProps } from "@/types/group/group-props";
 
 export function toGroupSummary(group: {
   id: string;

@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
-import { auth } from "@/auth";
 import { GroupExpenses } from "@/components/expenses";
 import { checkUserGroupMember } from "@/utils/auth/authorization";
 import { prisma } from "@/utils/db/prisma";
+import { verifyUserSession } from "@/utils/helpers";
 
 export const dynamic = "force-dynamic";
 
@@ -11,22 +11,26 @@ export default async function GroupPage({
 }: {
   params: Promise<{ groupId: string }>;
 }) {
-  const session = await auth();
-  if (!session?.user) redirect("/login");
+  await verifyUserSession();
   const { groupId } = await params;
+
   await checkUserGroupMember(groupId);
+
   const group = await prisma.group.findUnique({
     where: { id: groupId },
     include: {
       members: { include: { user: true } },
+      _count: { select: { expenses: true } },
       expenses: {
         include: { payer: true },
         orderBy: { occurredAt: "desc" },
-        take: 20,
+        take: 5,
       },
     },
   });
+
   if (!group) redirect("/groups");
+
   return (
     <main className="min-h-screen bg-background px-6 py-10">
       <div className="mx-auto max-w-5xl">
@@ -52,6 +56,7 @@ export default async function GroupPage({
             payerName: expense.payer.name ?? expense.payer.email ?? "Membro",
             occurredAt: expense.occurredAt.toISOString(),
           }))}
+          initialTotalPages={Math.max(1, Math.ceil(group._count.expenses / 5))}
         />
       </div>
     </main>
