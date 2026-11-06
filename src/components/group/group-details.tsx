@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { GroupWorkspaceProps } from "@/types";
 import { refreshBalances } from "@/utils/functions";
-import { GroupBalances } from "./balances/group-balances";
+import { GroupBalances } from "./group-balances";
 import { GroupExpenses } from "./expenses/group-expenses";
 
 export function GroupDetails({

@@ -1,5 +1,5 @@
 export * from "../feedback-message";
-export * from "./balances/group-balances";
+export * from "./group-balances";
 export * from "./expenses/group-expense-form";
 export * from "./expenses/group-expense-form";
 export * from "./expenses/group-expenses";
