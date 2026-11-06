@@ -9,11 +9,11 @@ import { checkUserGroupMember } from "@/utils/auth/authorization-auth";
 import { prisma } from "@/utils/db/prisma-db";
 import { splitEqually } from "@/utils/domain/splits-domain";
 import { errorMessage, validationErrors } from "@/utils/functions";
-import { parseAmountToCents } from "@/utils/helpers/money-input-helper";
+import { parseAmountToCents } from "@/utils/functions/money-input-function";
 import { createExpenseSchema } from "@/utils/schemas/expense-schema";
 
 export async function createExpense(
-  input: unknown,
+  input: unknown
 ): Promise<ActionResultProps<ExpenseSummaryProps>> {
   const parsed = createExpenseSchema.safeParse(input);
   if (!parsed.success)
@@ -35,7 +35,7 @@ export async function createExpense(
     if (
       memberIds.some(
         (memberId) =>
-          !group.members.some((member) => member.userId === memberId),
+          !group.members.some((member) => member.userId === memberId)
       )
     )
       return {
@@ -58,7 +58,7 @@ export async function createExpense(
       },
     });
     const payer = group.members.find(
-      (member) => member.userId === expense.payerId,
+      (member) => member.userId === expense.payerId
     );
     return {
       success: true,
@@ -80,7 +80,7 @@ export async function createExpense(
 
 export async function listGroupExpenses(
   groupId: string,
-  page = 1,
+  page = 1
 ): Promise<ActionResultProps<ExpensePageProps>> {
   try {
     await checkUserGroupMember(groupId);
