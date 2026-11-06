@@ -6,4 +6,5 @@ export type GroupExpensesProps = {
   members: Member[];
   initialExpenses: ExpenseSummaryProps[];
   initialTotalPages: number;
+  onExpenseCreated?: () => void;
 };

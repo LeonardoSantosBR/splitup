@@ -2,14 +2,15 @@
 
 import { useState, useTransition } from "react";
 import { listGroupExpenses } from "@/app/actions/expenses";
-import { ExpenseForm } from "@/components/expenses/expense-form";
 import type { GroupExpensesProps } from "@/types";
+import { GroupExpenseForm } from "./group-expense-form";
 
 export function GroupExpenses({
   groupId,
   members,
   initialExpenses,
   initialTotalPages,
+  onExpenseCreated,
 }: GroupExpensesProps) {
   const [expenses, setExpenses] = useState(initialExpenses);
   const [page, setPage] = useState(1);
@@ -29,12 +30,13 @@ export function GroupExpenses({
 
   return (
     <div className="mt-8 grid gap-6 lg:grid-cols-[360px_1fr]">
-      <ExpenseForm
+      <GroupExpenseForm
         groupId={groupId}
         members={members}
         onCreated={(expense) => {
           setExpenses((current) => [expense, ...current].slice(0, 5));
           setPage(1);
+          onExpenseCreated?.();
         }}
       />
       <section>

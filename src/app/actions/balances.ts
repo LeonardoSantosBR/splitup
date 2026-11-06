@@ -1,0 +1,70 @@
+"use server";
+
+import type { ActionResultProps, GroupBalancesProps } from "@/types";
+import { checkUserGroupMember } from "@/utils/auth/authorization-auth";
+import { prisma } from "@/utils/db/prisma-db";
+import {
+  assertBalancesSumToZero,
+  calculateBalances,
+} from "@/utils/domain/balances-domain";
+import { cents } from "@/utils/domain/money-domain";
+import { errorMessage } from "@/utils/functions";
+
+export async function getGroupBalances(
+  groupId: string,
+): Promise<ActionResultProps<GroupBalancesProps>> {
+  try {
+    await checkUserGroupMember(groupId);
+    const group = await prisma.group.findUnique({
+      where: { id: groupId },
+      include: {
+        members: { include: { user: true } },
+        expenses: { include: { shares: true } },
+        settlements: true,
+      },
+    });
+    if (!group) return { success: false, formError: "Grupo não encontrado." };
+
+    const balances = calculateBalances(
+      group.expenses.map((expense) => ({
+        payerId: expense.payerId,
+        shares: new Map(
+          expense.shares.map((share) => [
+            share.memberId,
+            cents(share.amountCents),
+          ]),
+        ),
+      })),
+    );
+    for (const settlement of group.settlements) {
+      balances.set(
+        settlement.fromMemberId,
+        cents(
+          (balances.get(settlement.fromMemberId) ?? 0) + settlement.amountCents,
+        ),
+      );
+      balances.set(
+        settlement.toMemberId,
+        cents(
+          (balances.get(settlement.toMemberId) ?? 0) - settlement.amountCents,
+        ),
+      );
+    }
+    assertBalancesSumToZero(balances);
+    return {
+      success: true,
+      data: {
+        balances: group.members.map(({ user }) => ({
+          memberId: user.id,
+          memberName: user.name ?? user.email ?? "Membro",
+          amountCents: balances.get(user.id) ?? cents(0),
+        })),
+      },
+    };
+  } catch (error) {
+    return {
+      success: false,
+      formError: errorMessage(error, "Não foi possível carregar os saldos."),
+    };
+  }
+}
