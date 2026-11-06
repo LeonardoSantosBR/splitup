@@ -8,7 +8,8 @@ import type {
 import { checkUserGroupMember } from "@/utils/auth/authorization-auth";
 import { prisma } from "@/utils/db/prisma-db";
 import { splitEqually } from "@/utils/domain/splits-domain";
-import { errorMessage, validationErrors } from "@/utils/functions";
+import { errorMessage } from "@/utils/functions/error-message-function";
+import { validationErrors } from "@/utils/functions/validation-errors-function";
 import { parseAmountToCents } from "@/utils/functions/money-input-function";
 import { createExpenseSchema } from "@/utils/schemas/expense-schema";
 

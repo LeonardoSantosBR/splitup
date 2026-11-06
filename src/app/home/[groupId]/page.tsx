@@ -3,7 +3,7 @@ import { getGroupBalances } from "@/app/actions/balances";
 import { GroupDetails } from "@/components/group";
 import { checkUserGroupMember } from "@/utils/auth/authorization-auth";
 import { prisma } from "@/utils/db/prisma-db";
-import { verifyUserSession } from "@/utils/helpers";
+import { verifyUserSession } from "@/utils/functions/verify-user-session-function";
 
 export const dynamic = "force-dynamic";
 export default async function GroupByIdPage({

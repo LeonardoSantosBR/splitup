@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import { listGroupExpenses } from "@/app/actions/expenses";
 import type { GroupExpensesProps } from "@/types";
 import { GroupExpenseForm } from "./group-expense-form";
-import { changePage } from "@/utils/functions";
+import { changePage } from "@/utils/functions/change-page-function";
 
 export function GroupExpenses({
   groupId,

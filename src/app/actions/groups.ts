@@ -4,7 +4,8 @@ import type { ActionResultProps } from "@/types/action-result-props";
 import type { GroupSummaryProps } from "@/types/group/group-props";
 import { checkUserSessionAuth } from "@/utils/auth/authorization-auth";
 import { prisma } from "@/utils/db/prisma-db";
-import { errorMessage, validationErrors } from "@/utils/functions";
+import { errorMessage } from "@/utils/functions/error-message-function";
+import { validationErrors } from "@/utils/functions/validation-errors-function";
 import { toGroupSummary } from "@/utils/functions/to-group-summary-function";
 import {
   createGroupSchema,

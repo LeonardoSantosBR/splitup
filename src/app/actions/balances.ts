@@ -8,7 +8,7 @@ import {
   calculateBalances,
 } from "@/utils/domain/balances-domain";
 import { cents } from "@/utils/domain/money-domain";
-import { errorMessage } from "@/utils/functions";
+import { errorMessage } from "@/utils/functions/error-message-function";
 
 export async function getGroupBalances(
   groupId: string,

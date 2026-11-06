@@ -10,7 +10,8 @@ import {
 } from "@/components/group";
 import { Header } from "@/components/header";
 import type { HomeWorkSpaceProps } from "@/types";
-import { clearMessages, copyInvite } from "@/utils/functions";
+import { clearMessages } from "@/utils/functions/clear-messages-function";
+import { copyInvite } from "@/utils/functions/copy-invite-function";
 
 export function HomeActions({
   initialGroups,
@@ -33,7 +34,7 @@ export function HomeActions({
         setError(
           result.fieldErrors?.name?.[0] ??
             result.formError ??
-            "Não foi possível criar o grupo.",
+            "Não foi possível criar o grupo."
         );
         return;
       }
@@ -52,14 +53,14 @@ export function HomeActions({
         setError(
           result.fieldErrors?.inviteToken?.[0] ??
             result.formError ??
-            "Não foi possível entrar no grupo.",
+            "Não foi possível entrar no grupo."
         );
         return;
       }
       setGroups((current) =>
         current.some((group) => group.id === result.data.id)
           ? current
-          : [result.data, ...current],
+          : [result.data, ...current]
       );
       setInviteToken("");
       setFeedback(`Você entrou em “${result.data.name}”.`);

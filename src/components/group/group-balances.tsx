@@ -1,5 +1,5 @@
 import type { GroupBalancesProps } from "@/types";
-import { formatCents } from "@/utils/functions";
+import { formatCents } from "@/utils/functions/format-cents-function";
 
 export function GroupBalances({ balances }: GroupBalancesProps) {
   return (
