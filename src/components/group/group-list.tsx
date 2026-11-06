@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { GroupListProps } from "@/types";
+import type { GroupListProps } from "@/types";
 
 export function GroupList({ groups, onCopyInvite }: GroupListProps) {
   return (
@@ -38,7 +38,7 @@ export function GroupList({ groups, onCopyInvite }: GroupListProps) {
               >
                 Criado em{" "}
                 {new Intl.DateTimeFormat("pt-BR").format(
-                  new Date(group.createdAt)
+                  new Date(group.createdAt),
                 )}
               </Link>
               <button

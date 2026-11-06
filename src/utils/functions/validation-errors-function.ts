@@ -1,4 +1,4 @@
-import { FieldErrors } from "@/types";
+import type { FieldErrors } from "@/types";
 
 export function validationErrors(error: {
   flatten: () => { fieldErrors: FieldErrors };

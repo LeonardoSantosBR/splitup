@@ -15,6 +15,7 @@ export default async function HomeWorkSpacePage() {
     <HomeActions
       initialGroups={result.data}
       userName={session?.user?.name ?? ""}
+      userImage={session?.user?.image}
     />
   );
 }
