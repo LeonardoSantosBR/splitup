@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { createExpense } from "@/app/actions/expenses";
-import type { ExpenseFormProps } from "@/types/expense-form-props";
+import type { ExpenseFormProps } from "@/types/expenseFormProps";
 
 export function GroupExpenseForm({
   groupId,
@@ -13,7 +13,7 @@ export function GroupExpenseForm({
   const [amount, setAmount] = useState("");
   const [payerId, setPayerId] = useState(members[0]?.id ?? "");
   const [participantIds, setParticipantIds] = useState(
-    members.map((member) => member.id),
+    members.map((member) => member.id)
   );
   const [message, setMessage] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -32,7 +32,7 @@ export function GroupExpenseForm({
         setMessage(
           result.formError ??
             result.fieldErrors?.description?.[0] ??
-            "Revise os campos.",
+            "Revise os campos."
         );
         return;
       }
@@ -46,7 +46,7 @@ export function GroupExpenseForm({
     setParticipantIds((current) =>
       current.includes(id)
         ? current.filter((item) => item !== id)
-        : [...current, id],
+        : [...current, id]
     );
   }
   return (

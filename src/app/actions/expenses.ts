@@ -1,17 +1,17 @@
 "use server";
 
-import type { ActionResultProps } from "@/types/action-result-props";
+import type { ActionResultProps } from "@/types/actionResultProps";
 import type {
   ExpensePageProps,
   ExpenseSummaryProps,
-} from "@/types/expense-summary-props";
-import { checkUserGroupMember } from "@/utils/auth/authorization-auth";
-import { prisma } from "@/utils/db/prisma-db";
-import { splitEqually } from "@/utils/domain/splits-domain";
-import { errorMessage } from "@/utils/functions/error-message-function";
-import { validationErrors } from "@/utils/functions/validation-errors-function";
-import { parseAmountToCents } from "@/utils/functions/money-input-function";
-import { createExpenseSchema } from "@/utils/schemas/expense-schema";
+} from "@/types/expenseSummaryProps";
+import { checkUserGroupMember } from "@/auth/auth";
+import { prisma } from "@/db/prismaDb";
+import { splitEqually } from "@/utils/domain/splitsDomain";
+import { errorMessage } from "@/utils/functions/errorMessageFunction";
+import { validationErrors } from "@/utils/functions/validationErrorsFunction";
+import { parseAmountToCents } from "@/utils/functions/moneyInputFunction";
+import { createExpenseSchema } from "@/utils/schemas/expenseSchema";
 
 export async function createExpense(
   input: unknown

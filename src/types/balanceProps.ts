@@ -1,4 +1,4 @@
-import type { Cents } from "@/utils/domain/money-domain";
+import type { Cents } from "@/utils/domain/moneyDomain";
 
 export type BalanceProps = {
   memberId: string;

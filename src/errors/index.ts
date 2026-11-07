@@ -1,2 +1,2 @@
-export * from "./forbidden-error";
-export * from "./unauthorized-error";
+export * from "./forbiddenError";
+export * from "./unauthorizedError";

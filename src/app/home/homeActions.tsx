@@ -10,8 +10,8 @@ import {
 } from "@/components/group";
 import { Header } from "@/components/header";
 import type { HomeWorkSpaceProps } from "@/types";
-import { clearMessages } from "@/utils/functions/clear-messages-function";
-import { copyInvite } from "@/utils/functions/copy-invite-function";
+import { clearMessages } from "@/utils/functions/clearMessagesFunction";
+import { copyInvite } from "@/utils/functions/copyInviteFunction";
 
 export function HomeActions({
   initialGroups,

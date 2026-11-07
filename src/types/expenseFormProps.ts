@@ -1,4 +1,4 @@
-import type { ExpenseSummaryProps } from "./expense-summary-props";
+import type { ExpenseSummaryProps } from "./expenseSummaryProps";
 
 export type Member = { id: string; name: string };
 

@@ -1,5 +1,5 @@
-import type { Cents } from "./money-domain";
-import { cents } from "./money-domain";
+import type { Cents } from "./moneyDomain";
+import { cents } from "./moneyDomain";
 
 export type Settlement = {
   fromMemberId: string;
@@ -8,7 +8,7 @@ export type Settlement = {
 };
 
 export function simplifyDebts(
-  balances: ReadonlyMap<string, Cents>,
+  balances: ReadonlyMap<string, Cents>
 ): Settlement[] {
   const creditors = [...balances.entries()]
     .filter(([, amount]) => amount > 0)

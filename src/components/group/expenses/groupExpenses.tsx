@@ -1,10 +1,9 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { listGroupExpenses } from "@/app/actions/expenses";
 import type { GroupExpensesProps } from "@/types";
-import { GroupExpenseForm } from "./group-expense-form";
-import { changePage } from "@/utils/functions/change-page-function";
+import { GroupExpenseForm } from "./groupExpenseForm";
+import { changePage } from "@/utils/functions/changePageFunction";
 
 export function GroupExpenses({
   groupId,

@@ -1,4 +1,4 @@
-import type { GroupSummaryProps } from "./group/group-props";
+import type { GroupSummaryProps } from "./group/groupProps";
 
 export type HomeWorkSpaceProps = {
   initialGroups: GroupSummaryProps[];

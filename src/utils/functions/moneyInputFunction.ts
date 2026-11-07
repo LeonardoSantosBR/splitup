@@ -1,4 +1,4 @@
-import { cents } from "@/utils/domain/money-domain";
+import { cents } from "@/utils/domain/moneyDomain";
 
 export function parseAmountToCents(value: string): ReturnType<typeof cents> {
   const normalized = value.trim().replace(/\./g, "").replace(",", ".");

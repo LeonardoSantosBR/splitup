@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation";
 import { getGroupBalances } from "@/app/actions/balances";
 import { GroupDetails } from "@/components/group";
-import { checkUserGroupMember } from "@/utils/auth/authorization-auth";
-import { prisma } from "@/utils/db/prisma-db";
-import { verifyUserSession } from "@/utils/functions/verify-user-session-function";
+import { checkUserGroupMember } from "@/auth/auth";
+import { prisma } from "@/db/prismaDb";
+import { verifyUserSession } from "@/utils/functions/verifyUserSessionFunction";
 
 export const dynamic = "force-dynamic";
 export default async function GroupByIdPage({

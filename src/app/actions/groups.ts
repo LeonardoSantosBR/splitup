@@ -1,16 +1,16 @@
 "use server";
 
-import type { ActionResultProps } from "@/types/action-result-props";
-import type { GroupSummaryProps } from "@/types/group/group-props";
-import { checkUserSessionAuth } from "@/utils/auth/authorization-auth";
-import { prisma } from "@/utils/db/prisma-db";
-import { errorMessage } from "@/utils/functions/error-message-function";
-import { validationErrors } from "@/utils/functions/validation-errors-function";
-import { toGroupSummary } from "@/utils/functions/to-group-summary-function";
+import type { ActionResultProps } from "@/types/actionResultProps";
+import type { GroupSummaryProps } from "@/types/group/groupProps";
+import { checkUserSessionAuth } from "@/auth/auth";
+import { prisma } from "@/db/prismaDb";
+import { errorMessage } from "@/utils/functions/errorMessageFunction";
+import { validationErrors } from "@/utils/functions/validationErrorsFunction";
+import { toGroupSummary } from "@/utils/functions/toGroupSummaryFunction";
 import {
   createGroupSchema,
   joinGroupSchema,
-} from "@/utils/schemas/group-schema";
+} from "@/utils/schemas/groupSchema";
 
 export async function createGroup(
   input: unknown

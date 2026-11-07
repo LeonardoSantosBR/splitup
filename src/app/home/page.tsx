@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { listUserGroups } from "@/app/actions/groups";
-import { HomeActions } from "./home-actions";
-import { verifyUserSession } from "@/utils/functions/verify-user-session-function";
+import { HomeActions } from "./homeActions";
+import { verifyUserSession } from "@/utils/functions/verifyUserSessionFunction";
 
 export const dynamic = "force-dynamic";
 
