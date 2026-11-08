@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import { createExpense } from "@/app/actions/expenses";
 import type { ExpenseFormProps } from "@/types/expenseFormProps";
 
-export function GroupExpenseForm({
+export function GroupExpensesForm({
   groupId,
   members,
   onCreated,
