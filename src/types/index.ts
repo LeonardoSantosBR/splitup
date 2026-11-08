@@ -10,3 +10,4 @@ export * from "./group/groupSettlementsProps";
 export * from "./headerProps";
 export * from "./homeWorkspaceProps";
 export * from "./loginFormProps";
+export * from "./group/groupActionCardsProps";
