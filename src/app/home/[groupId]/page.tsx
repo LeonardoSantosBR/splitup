@@ -1,7 +1,8 @@
 import { redirect } from "next/navigation";
 import { getGroupBalances } from "@/app/actions/balances";
+import { getGroupSettlements } from "@/app/actions/settlements";
+import { AuthUserGroupMember } from "@/auth/auth";
 import { GroupDetails } from "@/components/group";
-import { checkUserGroupMember } from "@/auth/auth";
 import { prisma } from "@/db/prismaDb";
 import { verifyUserSession } from "@/utils/functions/verifyUserSessionFunction";
 
@@ -13,7 +14,7 @@ export default async function GroupByIdPage({
 }) {
   await verifyUserSession();
   const { groupId } = await params;
-  await checkUserGroupMember(groupId);
+  await AuthUserGroupMember(groupId);
 
   const group = await prisma.group.findUnique({
     where: { id: groupId },
@@ -30,6 +31,7 @@ export default async function GroupByIdPage({
 
   if (!group) redirect("/home");
   const balancesResult = await getGroupBalances(groupId);
+  const settlementsResult = await getGroupSettlements(groupId);
 
   return (
     <main className="min-h-screen bg-background px-6 py-10">
@@ -59,6 +61,11 @@ export default async function GroupByIdPage({
           initialTotalPages={Math.max(1, Math.ceil(group._count.expenses / 5))}
           initialBalances={
             balancesResult.success ? balancesResult.data : { balances: [] }
+          }
+          initialSettlements={
+            settlementsResult.success
+              ? settlementsResult.data
+              : { settlements: [] }
           }
         />
       </div>

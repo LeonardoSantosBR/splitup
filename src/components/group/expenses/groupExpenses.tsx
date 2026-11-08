@@ -2,8 +2,8 @@
 
 import { useState, useTransition } from "react";
 import type { GroupExpensesProps } from "@/types";
-import { GroupExpenseForm } from "./groupExpenseForm";
 import { changePage } from "@/utils/functions/changePageFunction";
+import { GroupExpenseForm } from "./groupExpenseForm";
 
 export function GroupExpenses({
   groupId,
@@ -73,7 +73,7 @@ export function GroupExpenses({
                   setExpenses,
                   setPage,
                   setTotalPages,
-                  page - 1
+                  page - 1,
                 )
               }
               className="rounded-lg border border-(--slate)/30 bg-white px-3 py-2 text-sm font-semibold text-foreground disabled:opacity-40"
@@ -93,7 +93,7 @@ export function GroupExpenses({
                   setExpenses,
                   setPage,
                   setTotalPages,
-                  page + 1
+                  page + 1,
                 )
               }
               className="rounded-lg border border-(--slate)/30 bg-white px-3 py-2 text-sm font-semibold text-foreground disabled:opacity-40"

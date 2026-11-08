@@ -4,7 +4,7 @@ import Google from "next-auth/providers/google";
 import { prisma } from "@/db/prismaDb";
 
 const adapter = PrismaAdapter(
-  prisma as unknown as Parameters<typeof PrismaAdapter>[0]
+  prisma as unknown as Parameters<typeof PrismaAdapter>[0],
 );
 
 export const { handlers, auth, signIn, signOut } = NextAuth({

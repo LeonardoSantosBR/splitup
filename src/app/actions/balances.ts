@@ -1,8 +1,8 @@
 "use server";
 
-import type { ActionResultProps, GroupBalancesProps } from "@/types";
-import { checkUserGroupMember } from "@/auth/auth";
+import { AuthUserGroupMember } from "@/auth/auth";
 import { prisma } from "@/db/prismaDb";
+import type { ActionResultProps, GroupBalancesProps } from "@/types";
 import {
   assertBalancesSumToZero,
   calculateBalances,
@@ -11,10 +11,10 @@ import { cents } from "@/utils/domain/moneyDomain";
 import { errorMessage } from "@/utils/functions/errorMessageFunction";
 
 export async function getGroupBalances(
-  groupId: string
+  groupId: string,
 ): Promise<ActionResultProps<GroupBalancesProps>> {
   try {
-    await checkUserGroupMember(groupId);
+    await AuthUserGroupMember(groupId);
     const group = await prisma.group.findUnique({
       where: { id: groupId },
       include: {
@@ -32,22 +32,22 @@ export async function getGroupBalances(
           expense.shares.map((share) => [
             share.memberId,
             cents(share.amountCents),
-          ])
+          ]),
         ),
-      }))
+      })),
     );
     for (const settlement of group.settlements) {
       balances.set(
         settlement.fromMemberId,
         cents(
-          (balances.get(settlement.fromMemberId) ?? 0) + settlement.amountCents
-        )
+          (balances.get(settlement.fromMemberId) ?? 0) + settlement.amountCents,
+        ),
       );
       balances.set(
         settlement.toMemberId,
         cents(
-          (balances.get(settlement.toMemberId) ?? 0) - settlement.amountCents
-        )
+          (balances.get(settlement.toMemberId) ?? 0) - settlement.amountCents,
+        ),
       );
     }
     assertBalancesSumToZero(balances);

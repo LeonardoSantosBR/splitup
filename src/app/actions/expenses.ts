@@ -1,27 +1,27 @@
 "use server";
 
+import { AuthUserGroupMember } from "@/auth/auth";
+import { prisma } from "@/db/prismaDb";
 import type { ActionResultProps } from "@/types/actionResultProps";
 import type {
   ExpensePageProps,
   ExpenseSummaryProps,
 } from "@/types/expenseSummaryProps";
-import { checkUserGroupMember } from "@/auth/auth";
-import { prisma } from "@/db/prismaDb";
 import { splitEqually } from "@/utils/domain/splitsDomain";
 import { errorMessage } from "@/utils/functions/errorMessageFunction";
-import { validationErrors } from "@/utils/functions/validationErrorsFunction";
 import { parseAmountToCents } from "@/utils/functions/moneyInputFunction";
+import { validationErrors } from "@/utils/functions/validationErrorsFunction";
 import { createExpenseSchema } from "@/utils/schemas/expenseSchema";
 
 export async function createExpense(
-  input: unknown
+  input: unknown,
 ): Promise<ActionResultProps<ExpenseSummaryProps>> {
   const parsed = createExpenseSchema.safeParse(input);
   if (!parsed.success)
     return { success: false, fieldErrors: validationErrors(parsed.error) };
   try {
     const { groupId } = parsed.data;
-    await checkUserGroupMember(groupId);
+    await AuthUserGroupMember(groupId);
     const amount = parseAmountToCents(parsed.data.amount);
     const group = await prisma.group.findUnique({
       where: { id: groupId },
@@ -36,7 +36,7 @@ export async function createExpense(
     if (
       memberIds.some(
         (memberId) =>
-          !group.members.some((member) => member.userId === memberId)
+          !group.members.some((member) => member.userId === memberId),
       )
     )
       return {
@@ -59,7 +59,7 @@ export async function createExpense(
       },
     });
     const payer = group.members.find(
-      (member) => member.userId === expense.payerId
+      (member) => member.userId === expense.payerId,
     );
     return {
       success: true,
@@ -81,10 +81,10 @@ export async function createExpense(
 
 export async function listGroupExpenses(
   groupId: string,
-  page = 1
+  page = 1,
 ): Promise<ActionResultProps<ExpensePageProps>> {
   try {
-    await checkUserGroupMember(groupId);
+    await AuthUserGroupMember(groupId);
     const pageSize = 5;
     const safePage = Math.max(1, Math.floor(page));
     const [total, expenses] = await prisma.$transaction([

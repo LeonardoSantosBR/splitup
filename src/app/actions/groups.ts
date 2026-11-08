@@ -1,26 +1,26 @@
 "use server";
 
+import { AuthUserSessionAuth } from "@/auth/auth";
+import { prisma } from "@/db/prismaDb";
 import type { ActionResultProps } from "@/types/actionResultProps";
 import type { GroupSummaryProps } from "@/types/group/groupProps";
-import { checkUserSessionAuth } from "@/auth/auth";
-import { prisma } from "@/db/prismaDb";
 import { errorMessage } from "@/utils/functions/errorMessageFunction";
-import { validationErrors } from "@/utils/functions/validationErrorsFunction";
 import { toGroupSummary } from "@/utils/functions/toGroupSummaryFunction";
+import { validationErrors } from "@/utils/functions/validationErrorsFunction";
 import {
   createGroupSchema,
   joinGroupSchema,
 } from "@/utils/schemas/groupSchema";
 
 export async function createGroup(
-  input: unknown
+  input: unknown,
 ): Promise<ActionResultProps<GroupSummaryProps>> {
   const parsed = createGroupSchema.safeParse(input);
   if (!parsed.success)
     return { success: false, fieldErrors: validationErrors(parsed.error) };
 
   try {
-    const user = await checkUserSessionAuth();
+    const user = await AuthUserSessionAuth();
     const group = await prisma.$transaction(async (transaction) => {
       const createdGroup = await transaction.group.create({
         data: { name: parsed.data.name, creatorId: user.id },
@@ -40,14 +40,14 @@ export async function createGroup(
 }
 
 export async function joinGroup(
-  input: unknown
+  input: unknown,
 ): Promise<ActionResultProps<GroupSummaryProps>> {
   const parsed = joinGroupSchema.safeParse(input);
   if (!parsed.success)
     return { success: false, fieldErrors: validationErrors(parsed.error) };
 
   try {
-    const user = await checkUserSessionAuth();
+    const user = await AuthUserSessionAuth();
     const group = await prisma.group.findUnique({
       where: { inviteToken: parsed.data.inviteToken },
     });
@@ -72,7 +72,7 @@ export async function listUserGroups(): Promise<
   ActionResultProps<GroupSummaryProps[]>
 > {
   try {
-    const user = await checkUserSessionAuth();
+    const user = await AuthUserSessionAuth();
     const memberships = await prisma.groupMember.findMany({
       where: { userId: user.id },
       include: { group: true },

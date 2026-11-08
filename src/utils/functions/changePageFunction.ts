@@ -1,6 +1,6 @@
+import type { SetStateAction, TransitionStartFunction } from "react";
 import { listGroupExpenses } from "@/app/actions/expenses";
-import { ExpenseSummaryProps } from "@/types";
-import { SetStateAction, TransitionStartFunction } from "react";
+import type { ExpenseSummaryProps } from "@/types";
 
 export function changePage(
   startTransition: TransitionStartFunction,
@@ -8,7 +8,7 @@ export function changePage(
   setExpenses: (value: SetStateAction<ExpenseSummaryProps[]>) => void,
   setPage: (value: SetStateAction<number>) => void,
   setTotalPages: (value: SetStateAction<number>) => void,
-  nextPage: number
+  nextPage: number,
 ) {
   startTransition(async () => {
     const result = await listGroupExpenses(groupId, nextPage);
