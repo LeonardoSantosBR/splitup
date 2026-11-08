@@ -1,6 +1,7 @@
 export * from "./actionResultProps";
 export * from "./balanceProps";
 export * from "./expenseSummaryProps";
+export * from "./group/groupActionCardsProps";
 export * from "./group/groupBalancesProps";
 export * from "./group/groupDetailsProps";
 export * from "./group/groupExpensesProps";
@@ -10,4 +11,3 @@ export * from "./group/groupSettlementsProps";
 export * from "./headerProps";
 export * from "./homeWorkspaceProps";
 export * from "./loginFormProps";
-export * from "./group/groupActionCardsProps";

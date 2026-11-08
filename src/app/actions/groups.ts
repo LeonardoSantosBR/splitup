@@ -10,6 +10,7 @@ import { validationErrors } from "@/utils/functions/validationErrorsFunction";
 import {
   createGroupSchema,
   joinGroupSchema,
+  updateGroupNameSchema,
 } from "@/utils/schemas/groupSchema";
 
 export async function createGroup(
@@ -86,6 +87,34 @@ export async function listUserGroups(): Promise<
     return {
       success: false,
       formError: errorMessage(error, "Não foi possível carregar seus grupos."),
+    };
+  }
+}
+
+export async function updateGroupName(
+  input: unknown,
+): Promise<ActionResultProps<GroupSummaryProps>> {
+  const parsed = updateGroupNameSchema.safeParse(input);
+  if (!parsed.success)
+    return { success: false, fieldErrors: validationErrors(parsed.error) };
+  try {
+    const user = await AuthUserSessionAuth();
+    const membership = await prisma.groupMember.findUnique({
+      where: {
+        groupId_userId: { groupId: parsed.data.groupId, userId: user.id },
+      },
+    });
+    if (!membership)
+      return { success: false, formError: "Você não participa deste grupo." };
+    const group = await prisma.group.update({
+      where: { id: parsed.data.groupId },
+      data: { name: parsed.data.name },
+    });
+    return { success: true, data: toGroupSummary(group) };
+  } catch (error) {
+    return {
+      success: false,
+      formError: errorMessage(error, "Não foi possível atualizar o grupo."),
     };
   }
 }

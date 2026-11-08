@@ -1,6 +1,6 @@
 "use client";
 
-import { GroupActionCardsProps } from "@/types";
+import type { GroupActionCardsProps } from "@/types";
 
 export function GroupActionCards({
   groupName,

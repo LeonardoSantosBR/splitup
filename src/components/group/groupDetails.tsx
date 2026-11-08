@@ -6,12 +6,14 @@ import { refreshBalances } from "@/utils/functions/refreshBalancesFunction";
 import { refreshSettlements } from "@/utils/functions/refreshSettlementsFunction";
 import { GroupExpenses } from "./expenses/groupExpenses";
 import { GroupBalances } from "./groupBalances";
+import { GroupNameEditor } from "./groupNameEditor";
 import { GroupReport } from "./groupReport";
 import { GroupSettlements } from "./groupSettlements";
 
 export function GroupDetails({
   initialBalances,
   initialSettlements,
+  initialGroupName,
   ...expenseProps
 }: GroupDetailsProps) {
   const [balances, setBalances] = useState(initialBalances.balances);
@@ -21,6 +23,10 @@ export function GroupDetails({
 
   return (
     <>
+      <GroupNameEditor
+        groupId={expenseProps.groupId}
+        initialName={initialGroupName}
+      />
       <GroupExpenses
         {...expenseProps}
         onExpenseCreated={() => {

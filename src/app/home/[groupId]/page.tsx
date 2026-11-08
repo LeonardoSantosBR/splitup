@@ -39,14 +39,12 @@ export default async function GroupByIdPage({
         <a href="/home" className="text-sm font-semibold text-(--primary)">
           ← Voltar para grupos
         </a>
-        <h1 className="mt-5 text-4xl font-bold text-foreground">
-          {group.name}
-        </h1>
         <p className="mt-2 text-(--dark-teal)">
           {group.members.length} participante(s)
         </p>
         <GroupDetails
           groupId={group.id}
+          initialGroupName={group.name}
           members={group.members.map(({ user }) => ({
             id: user.id,
             name: user.name ?? user.email ?? "Membro",
