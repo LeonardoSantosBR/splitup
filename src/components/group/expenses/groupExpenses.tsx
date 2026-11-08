@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import type { GroupExpensesProps } from "@/types";
 import { changePage } from "@/utils/functions/changePageFunction";
+import { formatCents } from "@/utils/functions/formatCentsFunction";
 import { GroupExpensesForm } from "./groupExpensesForm";
 
 export function GroupExpenses({
@@ -51,10 +52,7 @@ export function GroupExpenses({
                     </p>
                   </div>
                   <strong className="text-(--primary)">
-                    {(expense.amountCents / 100).toLocaleString("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    })}
+                    {formatCents(expense.amountCents)}
                   </strong>
                 </div>
               </article>
@@ -73,7 +71,7 @@ export function GroupExpenses({
                   setExpenses,
                   setPage,
                   setTotalPages,
-                  page - 1
+                  page - 1,
                 )
               }
               className="rounded-lg border border-(--slate)/30 bg-white px-3 py-2 text-sm font-semibold text-foreground disabled:opacity-40"
@@ -93,7 +91,7 @@ export function GroupExpenses({
                   setExpenses,
                   setPage,
                   setTotalPages,
-                  page + 1
+                  page + 1,
                 )
               }
               className="rounded-lg border border-(--slate)/30 bg-white px-3 py-2 text-sm font-semibold text-foreground disabled:opacity-40"

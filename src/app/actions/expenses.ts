@@ -7,6 +7,7 @@ import type {
   ExpensePageProps,
   ExpenseSummaryProps,
 } from "@/types/expenseSummaryProps";
+import { EXPENSES_PAGE_SIZE } from "@/utils/constants";
 import { splitEqually } from "@/utils/domain/splitsDomain";
 import { errorMessage } from "@/utils/functions/errorMessageFunction";
 import { parseAmountToCents } from "@/utils/functions/moneyInputFunction";
@@ -85,7 +86,6 @@ export async function listGroupExpenses(
 ): Promise<ActionResultProps<ExpensePageProps>> {
   try {
     await AuthUserGroupMember(groupId);
-    const pageSize = 5;
     const safePage = Math.max(1, Math.floor(page));
     const [total, expenses] = await prisma.$transaction([
       prisma.expense.count({ where: { groupId } }),
@@ -93,15 +93,15 @@ export async function listGroupExpenses(
         where: { groupId },
         include: { payer: true },
         orderBy: { occurredAt: "desc" },
-        skip: (safePage - 1) * pageSize,
-        take: pageSize,
+        skip: (safePage - 1) * EXPENSES_PAGE_SIZE,
+        take: EXPENSES_PAGE_SIZE,
       }),
     ]);
     return {
       success: true,
       data: {
         page: safePage,
-        totalPages: Math.max(1, Math.ceil(total / pageSize)),
+        totalPages: Math.max(1, Math.ceil(total / EXPENSES_PAGE_SIZE)),
         items: expenses.map((expense) => ({
           id: expense.id,
           description: expense.description,

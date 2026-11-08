@@ -3,7 +3,7 @@
 import { AuthUserGroupMember } from "@/auth/auth";
 import { prisma } from "@/db/prismaDb";
 import type { ActionResultProps, GroupSettlementsProps } from "@/types";
-import { calculateBalances } from "@/utils/domain/balancesDomain";
+import { calculateGroupBalances } from "@/utils/domain/groupFinancialDomain";
 import { cents } from "@/utils/domain/moneyDomain";
 import { simplifyDebts } from "@/utils/domain/settlementsDomain";
 import { errorMessage } from "@/utils/functions/errorMessageFunction";
@@ -22,7 +22,7 @@ export async function getGroupSettlements(
       },
     });
     if (!group) return { success: false, formError: "Grupo não encontrado." };
-    const balances = calculateBalances(
+    const balances = calculateGroupBalances(
       group.expenses.map((expense) => ({
         payerId: expense.payerId,
         shares: new Map(
@@ -32,21 +32,8 @@ export async function getGroupSettlements(
           ]),
         ),
       })),
+      group.settlements,
     );
-    for (const settlement of group.settlements) {
-      balances.set(
-        settlement.fromMemberId,
-        cents(
-          (balances.get(settlement.fromMemberId) ?? 0) + settlement.amountCents,
-        ),
-      );
-      balances.set(
-        settlement.toMemberId,
-        cents(
-          (balances.get(settlement.toMemberId) ?? 0) - settlement.amountCents,
-        ),
-      );
-    }
     const names = new Map(
       group.members.map(({ user }) => [
         user.id,
