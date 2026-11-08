@@ -10,8 +10,6 @@ import {
 } from "@/components/group";
 import { Header } from "@/components/header";
 import type { HomeWorkSpaceProps } from "@/types";
-import { clearMessages } from "@/utils/functions/clearMessagesFunction";
-import { copyInvite } from "@/utils/functions/copyInviteFunction";
 
 export function HomeActions({
   initialGroups,
@@ -27,14 +25,14 @@ export function HomeActions({
 
   function handleCreate(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    clearMessages(setFeedback, setError);
+    clearMessages();
     startTransition(async () => {
       const result = await createGroup({ name: groupName });
       if (!result.success) {
         setError(
           result.fieldErrors?.name?.[0] ??
             result.formError ??
-            "Não foi possível criar o grupo.",
+            "Não foi possível criar o grupo."
         );
         return;
       }
@@ -46,25 +44,36 @@ export function HomeActions({
 
   function handleJoin(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    clearMessages(setFeedback, setError);
+    clearMessages();
     startTransition(async () => {
       const result = await joinGroup({ inviteToken });
       if (!result.success) {
         setError(
           result.fieldErrors?.inviteToken?.[0] ??
             result.formError ??
-            "Não foi possível entrar no grupo.",
+            "Não foi possível entrar no grupo."
         );
         return;
       }
       setGroups((current) =>
         current.some((group) => group.id === result.data.id)
           ? current
-          : [result.data, ...current],
+          : [result.data, ...current]
       );
       setInviteToken("");
       setFeedback(`Você entrou em “${result.data.name}”.`);
     });
+  }
+
+  function clearMessages() {
+    setFeedback(null);
+    setError(null);
+  }
+
+  async function copyInvite(group: (typeof groups)[number]) {
+    await navigator.clipboard.writeText(group.inviteToken);
+    setError(null);
+    setFeedback("Link de convite copiado.");
   }
 
   return (
@@ -96,10 +105,7 @@ export function HomeActions({
           onCreate={handleCreate}
           onJoin={handleJoin}
         />
-        <GroupList
-          groups={groups}
-          onCopyInvite={(group) => copyInvite(setError, setFeedback, group)}
-        />
+        <GroupList groups={groups} onCopyInvite={copyInvite} />
       </div>
     </main>
   );

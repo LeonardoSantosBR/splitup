@@ -1,12 +1,13 @@
 import { redirect } from "next/navigation";
 import { listUserGroups } from "@/app/actions/groups";
-import { verifyUserSession } from "@/utils/functions/verifyUserSessionFunction";
+import { auth } from "@/auth";
 import { HomeActions } from "./homeActions";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomeWorkSpacePage() {
-  const session = await verifyUserSession();
+  const session = await auth();
+  if (!session?.user) redirect("/login");
 
   const result = await listUserGroups();
   if (!result.success) redirect("/login");

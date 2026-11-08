@@ -1,10 +1,10 @@
 import { redirect } from "next/navigation";
 import { getGroupBalances } from "@/app/actions/balances";
 import { getGroupSettlements } from "@/app/actions/settlements";
+import { auth } from "@/auth";
 import { AuthUserGroupMember } from "@/auth/auth";
 import { GroupDetails } from "@/components/group";
 import { prisma } from "@/db/prismaDb";
-import { verifyUserSession } from "@/utils/functions/verifyUserSessionFunction";
 
 export const dynamic = "force-dynamic";
 export default async function GroupByIdPage({
@@ -12,7 +12,8 @@ export default async function GroupByIdPage({
 }: {
   params: Promise<{ groupId: string }>;
 }) {
-  await verifyUserSession();
+  const session = await auth();
+  if (!session?.user) redirect("/login");
   const { groupId } = await params;
   await AuthUserGroupMember(groupId);
 

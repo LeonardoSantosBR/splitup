@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { getGroupBalances } from "@/app/actions/balances";
+import { getGroupSettlements } from "@/app/actions/settlements";
 import type { GroupDetailsProps } from "@/types";
-import { refreshBalances } from "@/utils/functions/refreshBalancesFunction";
-import { refreshSettlements } from "@/utils/functions/refreshSettlementsFunction";
 import { GroupExpenses } from "./expenses/groupExpenses";
 import { GroupBalances } from "./groupBalances";
 import { GroupNameEditor } from "./groupNameEditor";
@@ -18,8 +18,18 @@ export function GroupDetails({
 }: GroupDetailsProps) {
   const [balances, setBalances] = useState(initialBalances.balances);
   const [settlements, setSettlements] = useState(
-    initialSettlements.settlements,
+    initialSettlements.settlements
   );
+
+  async function refreshFinancialData() {
+    const [balancesResult, settlementsResult] = await Promise.all([
+      getGroupBalances(expenseProps.groupId),
+      getGroupSettlements(expenseProps.groupId),
+    ]);
+    if (balancesResult.success) setBalances(balancesResult.data.balances);
+    if (settlementsResult.success)
+      setSettlements(settlementsResult.data.settlements);
+  }
 
   return (
     <>
@@ -30,17 +40,14 @@ export function GroupDetails({
       <GroupExpenses
         {...expenseProps}
         onExpenseCreated={() => {
-          refreshBalances(expenseProps.groupId, setBalances);
-          refreshSettlements(expenseProps.groupId, setSettlements);
+          void refreshFinancialData();
         }}
       />
       <GroupBalances balances={balances} />
       <GroupSettlements
         groupId={expenseProps.groupId}
         settlements={settlements}
-        onSettled={() =>
-          refreshSettlements(expenseProps.groupId, setSettlements)
-        }
+        onSettled={() => void refreshFinancialData()}
       />
       <GroupReport groupId={expenseProps.groupId} />
     </>

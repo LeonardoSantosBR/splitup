@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { listGroupExpenses } from "@/app/actions/expenses";
 import type { GroupExpensesProps } from "@/types";
-import { changePage } from "@/utils/functions/changePageFunction";
 import { formatCents } from "@/utils/functions/formatCentsFunction";
 import { GroupExpensesForm } from "./groupExpensesForm";
 
@@ -17,6 +17,16 @@ export function GroupExpenses({
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(initialTotalPages);
   const [isPending, startTransition] = useTransition();
+
+  function changePage(nextPage: number) {
+    startTransition(async () => {
+      const result = await listGroupExpenses(groupId, nextPage);
+      if (!result.success) return;
+      setExpenses(result.data.items);
+      setPage(result.data.page);
+      setTotalPages(result.data.totalPages);
+    });
+  }
 
   return (
     <div className="mt-8 grid gap-6 lg:grid-cols-[360px_1fr]">
@@ -64,16 +74,7 @@ export function GroupExpenses({
             <button
               type="button"
               disabled={page === 1 || isPending}
-              onClick={() =>
-                changePage(
-                  startTransition,
-                  groupId,
-                  setExpenses,
-                  setPage,
-                  setTotalPages,
-                  page - 1,
-                )
-              }
+              onClick={() => changePage(page - 1)}
               className="rounded-lg border border-(--slate)/30 bg-white px-3 py-2 text-sm font-semibold text-foreground disabled:opacity-40"
             >
               Anterior
@@ -84,16 +85,7 @@ export function GroupExpenses({
             <button
               type="button"
               disabled={page === totalPages || isPending}
-              onClick={() =>
-                changePage(
-                  startTransition,
-                  groupId,
-                  setExpenses,
-                  setPage,
-                  setTotalPages,
-                  page + 1,
-                )
-              }
+              onClick={() => changePage(page + 1)}
               className="rounded-lg border border-(--slate)/30 bg-white px-3 py-2 text-sm font-semibold text-foreground disabled:opacity-40"
             >
               Próxima

@@ -1,5 +1,10 @@
+import { signIn } from "@/auth";
 import { LoginBrandPanel, LoginForm } from "@/components/login";
-import { googleSignInAction } from "@/utils/functions/googleSigninActionFunction";
+
+async function googleSignInAction(): Promise<void> {
+  "use server";
+  await signIn("google", { redirectTo: "/home" });
+}
 
 export default function LoginPage() {
   return (
