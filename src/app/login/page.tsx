@@ -1,5 +1,5 @@
 import { LoginBrandPanel, LoginForm } from "@/components/login";
-import { googleSignInAction } from "@/utils/functions";
+import { googleSignInAction } from "@/utils/functions/googleSigninActionFunction";
 
 export default function LoginPage() {
   return (
