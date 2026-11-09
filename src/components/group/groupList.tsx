@@ -1,14 +1,43 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
+import { IoInformationCircleOutline } from "react-icons/io5";
+import { Pagination } from "@/components/group/pagination";
 import type { GroupListProps } from "@/types";
 
-export function GroupList({ groups, onCopyInvite }: GroupListProps) {
+export function GroupList({
+  groups,
+  onCopyInvite,
+  page,
+  totalPages,
+  isPending,
+  onPageChange,
+}: GroupListProps) {
+  const [showInfo, setShowInfo] = useState(false);
+
   return (
     <section className="mt-10">
-      <h2 className="text-xl font-bold text-foreground">
-        Grupos dos quais você participa
-      </h2>
+      <div className="relative flex items-center gap-2">
+        <h2 className="text-xl font-bold text-foreground">
+          Grupos dos quais você participa
+        </h2>
+        <button
+          type="button"
+          onClick={() => setShowInfo((current) => !current)}
+          aria-label="Informações sobre grupos finalizados"
+          aria-expanded={showInfo}
+          className="text-(--dark-teal) transition hover:text-(--primary)"
+        >
+          <IoInformationCircleOutline size={25} />
+        </button>
+        {showInfo && (
+          <p className="absolute left-0 top-full z-10 mt-2 max-w-xs rounded-lg bg-(--dark-teal) px-3 py-2 text-xs text-white shadow-lg">
+            Grupos finalizados continuam aparecendo nesta lista pelos próximos
+            30 dias.
+          </p>
+        )}
+      </div>
       {groups.length === 0 ? (
         <div className="mt-4 rounded-2xl border border-dashed border-(--slate)/40 bg-white p-10 text-center">
           <p className="font-semibold text-foreground">Ainda não há grupos</p>
@@ -38,7 +67,7 @@ export function GroupList({ groups, onCopyInvite }: GroupListProps) {
               >
                 Criado em{" "}
                 {new Intl.DateTimeFormat("pt-BR").format(
-                  new Date(group.createdAt),
+                  new Date(group.createdAt)
                 )}
               </Link>
               <button
@@ -52,6 +81,12 @@ export function GroupList({ groups, onCopyInvite }: GroupListProps) {
           ))}
         </div>
       )}
+      <Pagination
+        page={page}
+        totalPages={totalPages}
+        isPending={isPending}
+        onPageChange={onPageChange}
+      />
     </section>
   );
 }

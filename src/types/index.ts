@@ -5,6 +5,7 @@ export * from "./group/groupActionCardsProps";
 export * from "./group/groupBalancesProps";
 export * from "./group/groupDetailsProps";
 export * from "./group/groupExpensesProps";
+export * from "./group/groupListPageProps";
 export * from "./group/groupListProps";
 export * from "./group/groupProps";
 export * from "./group/groupSettlementsProps";

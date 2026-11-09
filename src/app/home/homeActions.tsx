@@ -2,7 +2,7 @@
 
 import { signOut } from "next-auth/react";
 import { useState, useTransition } from "react";
-import { createGroup, joinGroup } from "@/app/actions/groups";
+import { createGroup, joinGroup, listUserGroups } from "@/app/actions/groups";
 import {
   FeedbackMessage,
   GroupActionCards,
@@ -15,6 +15,8 @@ export function HomeActions({
   initialGroups,
   userName,
   userImage,
+  initialPage,
+  initialTotalPages,
 }: HomeWorkSpaceProps) {
   const [groups, setGroups] = useState(initialGroups);
   const [groupName, setGroupName] = useState("");
@@ -22,6 +24,9 @@ export function HomeActions({
   const [feedback, setFeedback] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [isPagePending, startPageTransition] = useTransition();
+  const [page, setPage] = useState(initialPage);
+  const [totalPages, setTotalPages] = useState(initialTotalPages);
 
   function handleCreate(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -76,6 +81,17 @@ export function HomeActions({
     setFeedback("Link de convite copiado.");
   }
 
+  function changePage(nextPage: number) {
+    startPageTransition(async () => {
+      const result = await listUserGroups(nextPage);
+      if (result.success) {
+        setGroups(result.data.items);
+        setPage(result.data.page);
+        setTotalPages(result.data.totalPages);
+      }
+    });
+  }
+
   return (
     <main className="min-h-screen bg-background">
       <Header
@@ -105,7 +121,14 @@ export function HomeActions({
           onCreate={handleCreate}
           onJoin={handleJoin}
         />
-        <GroupList groups={groups} onCopyInvite={copyInvite} />
+        <GroupList
+          groups={groups}
+          onCopyInvite={copyInvite}
+          page={page}
+          totalPages={totalPages}
+          isPending={isPagePending}
+          onPageChange={changePage}
+        />
       </div>
     </main>
   );

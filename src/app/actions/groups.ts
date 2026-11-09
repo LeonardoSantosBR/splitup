@@ -2,8 +2,8 @@
 
 import { AuthUserSessionAuth } from "@/auth/auth";
 import { prisma } from "@/db/prismaDb";
+import type { GroupListPageProps, GroupSummaryProps } from "@/types";
 import type { ActionResultProps } from "@/types/actionResultProps";
-import type { GroupSummaryProps } from "@/types/group/groupProps";
 import { errorMessage } from "@/utils/functions/errorMessageFunction";
 import { toGroupSummary } from "@/utils/functions/toGroupSummaryFunction";
 import { validationErrors } from "@/utils/functions/validationErrorsFunction";
@@ -69,19 +69,30 @@ export async function joinGroup(
   }
 }
 
-export async function listUserGroups(): Promise<
-  ActionResultProps<GroupSummaryProps[]>
-> {
+export async function listUserGroups(
+  page = 1,
+): Promise<ActionResultProps<GroupListPageProps>> {
   try {
     const user = await AuthUserSessionAuth();
-    const memberships = await prisma.groupMember.findMany({
-      where: { userId: user.id },
-      include: { group: true },
-      orderBy: { joinedAt: "desc" },
-    });
+    const pageSize = 9;
+    const safePage = Math.max(1, Math.floor(page));
+    const [total, memberships] = await prisma.$transaction([
+      prisma.groupMember.count({ where: { userId: user.id } }),
+      prisma.groupMember.findMany({
+        where: { userId: user.id },
+        include: { group: true },
+        orderBy: { joinedAt: "desc" },
+        skip: (safePage - 1) * pageSize,
+        take: pageSize,
+      }),
+    ]);
     return {
       success: true,
-      data: memberships.map(({ group }) => toGroupSummary(group)),
+      data: {
+        items: memberships.map(({ group }) => toGroupSummary(group)),
+        page: safePage,
+        totalPages: Math.max(1, Math.ceil(total / pageSize)),
+      },
     };
   } catch (error) {
     return {
