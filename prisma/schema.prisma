@@ -59,6 +59,7 @@ model VerificationToken {
 model Group {
   id          String        @id @default(cuid())
   name        String
+  isClosed    Boolean       @default(false)
   inviteToken String        @unique @default(cuid())
   creatorId   String
   creator     User          @relation("GroupCreator", fields: [creatorId], references: [id])

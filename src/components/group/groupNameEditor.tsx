@@ -1,15 +1,19 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { updateGroupName } from "@/app/actions/groups";
+import { FaFileDownload } from "react-icons/fa";
 import { MdOutlineEdit } from "react-icons/md";
+import { updateGroupName } from "@/app/actions/groups";
+import { getGroupReportPdf } from "@/app/actions/reports";
 
 export function GroupNameEditor({
   groupId,
   initialName,
+  isClosed,
 }: {
   groupId: string;
   initialName: string;
+  isClosed: boolean;
 }) {
   const [name, setName] = useState(initialName);
   const [editing, setEditing] = useState(false);
@@ -23,13 +27,35 @@ export function GroupNameEditor({
         setError(
           result.fieldErrors?.name?.[0] ??
             result.formError ??
-            "Não foi possível atualizar o nome."
+            "Não foi possível atualizar o nome.",
         );
         return;
       }
       setName(result.data.name);
       setError("");
       setEditing(false);
+    });
+  }
+
+  function downloadReport() {
+    startTransition(async () => {
+      const result = await getGroupReportPdf(groupId);
+      if (!result.success) {
+        setError(result.formError ?? "Não foi possível gerar o relatório.");
+        return;
+      }
+      const binary = atob(result.data.contentBase64);
+      const bytes = Uint8Array.from(binary, (character) =>
+        character.charCodeAt(0),
+      );
+      const url = URL.createObjectURL(
+        new Blob([bytes], { type: "application/pdf" }),
+      );
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = result.data.fileName;
+      link.click();
+      URL.revokeObjectURL(url);
     });
   }
 
@@ -68,6 +94,20 @@ export function GroupNameEditor({
         <div className="flex items-center gap-3">
           <h1 className="text-4xl font-bold text-foreground">{name}</h1>
           <MdOutlineEdit size={25} onClick={() => setEditing(true)} />
+          <button
+            type="button"
+            onClick={downloadReport}
+            disabled={!isClosed || isPending}
+            aria-label="Baixar relatório em PDF"
+            title={
+              isClosed
+                ? "Baixar relatório em PDF"
+                : "Encerre o grupo para baixar o relatório"
+            }
+            className={`transition ${isClosed ? "text-(--primary) hover:scale-110" : "cursor-not-allowed text-gray-400"} disabled:opacity-100`}
+          >
+            <FaFileDownload size={25} />
+          </button>
         </div>
       )}
       {error && <p className="mt-2 text-sm text-(--primary)">{error}</p>}

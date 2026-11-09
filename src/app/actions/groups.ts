@@ -118,3 +118,31 @@ export async function updateGroupName(
     };
   }
 }
+
+export async function closeGroup(
+  groupId: string,
+): Promise<ActionResultProps<null>> {
+  try {
+    const user = await AuthUserSessionAuth();
+    const group = await prisma.group.findUnique({
+      where: { id: groupId },
+      select: { creatorId: true, isClosed: true },
+    });
+    if (!group || group.creatorId !== user.id)
+      return {
+        success: false,
+        formError: "Apenas o criador pode fechar o grupo.",
+      };
+    if (group.isClosed) return { success: true, data: null };
+    await prisma.group.update({
+      where: { id: groupId },
+      data: { isClosed: true },
+    });
+    return { success: true, data: null };
+  } catch (error) {
+    return {
+      success: false,
+      formError: errorMessage(error, "Não foi possível fechar o grupo."),
+    };
+  }
+}

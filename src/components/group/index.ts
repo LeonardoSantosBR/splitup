@@ -4,7 +4,7 @@ export * from "./expenses/groupExpensesForm";
 export * from "./expenses/groupExpensesForm";
 export * from "./groupActionsCards";
 export * from "./groupBalances";
+export * from "./groupCloseButton";
 export * from "./groupDetails";
 export * from "./groupList";
 export * from "./groupNameEditor";
-export * from "./groupReport";

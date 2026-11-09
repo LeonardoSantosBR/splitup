@@ -37,15 +37,19 @@ export default async function GroupByIdPage({
   return (
     <main className="min-h-screen bg-background px-6 py-10">
       <div className="mx-auto max-w-5xl">
-        <a href="/home" className="text-sm font-semibold text-(--primary)">
-          ← Voltar para grupos
-        </a>
-        <p className="mt-2 text-(--dark-teal)">
-          {group.members.length} participante(s)
-        </p>
+        <div className="flex items-center justify-between gap-4">
+          <p className="text-sm text-(--dark-teal)">
+            {group.members.length} participante(s)
+          </p>
+          <a href="/home" className="text-sm font-semibold text-(--primary)">
+            ← Voltar para grupos
+          </a>
+        </div>
         <GroupDetails
           groupId={group.id}
           initialGroupName={group.name}
+          isClosed={group.isClosed}
+          canClose={group.creatorId === session.user.id}
           members={group.members.map(({ user }) => ({
             id: user.id,
             name: user.name ?? user.email ?? "Membro",

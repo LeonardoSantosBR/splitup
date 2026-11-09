@@ -6,19 +6,21 @@ import { getGroupSettlements } from "@/app/actions/settlements";
 import type { GroupDetailsProps } from "@/types";
 import { GroupExpenses } from "./expenses/groupExpenses";
 import { GroupBalances } from "./groupBalances";
+import { GroupCloseButton } from "./groupCloseButton";
 import { GroupNameEditor } from "./groupNameEditor";
-import { GroupReport } from "./groupReport";
 import { GroupSettlements } from "./groupSettlements";
 
 export function GroupDetails({
   initialBalances,
   initialSettlements,
   initialGroupName,
+  isClosed,
+  canClose,
   ...expenseProps
 }: GroupDetailsProps) {
   const [balances, setBalances] = useState(initialBalances.balances);
   const [settlements, setSettlements] = useState(
-    initialSettlements.settlements
+    initialSettlements.settlements,
   );
 
   async function refreshFinancialData() {
@@ -36,6 +38,7 @@ export function GroupDetails({
       <GroupNameEditor
         groupId={expenseProps.groupId}
         initialName={initialGroupName}
+        isClosed={isClosed}
       />
       <GroupExpenses
         {...expenseProps}
@@ -49,7 +52,9 @@ export function GroupDetails({
         settlements={settlements}
         onSettled={() => void refreshFinancialData()}
       />
-      <GroupReport groupId={expenseProps.groupId} />
+      {canClose && !isClosed && (
+        <GroupCloseButton groupId={expenseProps.groupId} />
+      )}
     </>
   );
 }
