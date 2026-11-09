@@ -31,12 +31,15 @@ export function GroupList({
         >
           <IoInformationCircleOutline size={25} />
         </button>
-        {showInfo && (
-          <p className="absolute left-0 top-full z-10 mt-2 max-w-xs rounded-lg bg-(--dark-teal) px-3 py-2 text-xs text-white shadow-lg">
-            Grupos finalizados continuam aparecendo nesta lista pelos próximos
-            30 dias.
-          </p>
-        )}
+        <p
+          className={`mt-10 z-10 ml-2 w-max max-w-xs -translate-y-1/2 rounded-lg bg-(--dark-teal) px-3 py-2 text-xs text-white shadow-lg transition-opacity duration-500 ${
+            showInfo ? "visible opacity-100" : "invisible opacity-0"
+          }`}
+          aria-hidden={!showInfo}
+        >
+          Grupos finalizados continuam aparecendo nesta lista pelos próximos 30
+          dias.
+        </p>
       </div>
       {groups.length === 0 ? (
         <div className="mt-4 rounded-2xl border border-dashed border-(--slate)/40 bg-white p-10 text-center">
