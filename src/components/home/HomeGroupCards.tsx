@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { HomeGroupProps } from "@/types/home";
+import { HomeMembersImage } from "./HomeMembersImage";
 
 export function HomeGroupCards({
   groups,
@@ -22,7 +23,10 @@ export function HomeGroupCards({
             >
               {group.name}
             </Link>
-            <span className="h-3 w-3 rounded-full bg-(--primary)" />
+            <HomeMembersImage
+              groupId={group.id}
+              membersImages={group.membersImages}
+            />
           </div>
           <Link
             href={`/home/${group.id}`}

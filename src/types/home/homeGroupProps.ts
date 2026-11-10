@@ -3,4 +3,5 @@ export type HomeGroupProps = {
   name: string;
   inviteToken: string;
   createdAt: string;
+  membersImages: Array<string | null>;
 };

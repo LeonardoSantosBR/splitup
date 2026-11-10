@@ -81,7 +81,13 @@ export async function listUserGroups(
       prisma.groupMember.count({ where: { userId: user.id } }),
       prisma.groupMember.findMany({
         where: { userId: user.id },
-        include: { group: true },
+        include: {
+          group: {
+            include: {
+              members: { include: { user: { select: { image: true } } } },
+            },
+          },
+        },
         orderBy: { joinedAt: "desc" },
         skip: (safePage - 1) * pageSize,
         take: pageSize,
