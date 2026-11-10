@@ -1,11 +1,11 @@
-import type { GroupSummaryProps } from "@/types/group/groupProps";
+import type { HomeGroupProps } from "@/types/home/homeGroupProps";
 
 export function toGroupSummary(group: {
   id: string;
   name: string;
   inviteToken: string;
   createdAt: Date;
-}): GroupSummaryProps {
+}): HomeGroupProps {
   return {
     id: group.id,
     name: group.name,

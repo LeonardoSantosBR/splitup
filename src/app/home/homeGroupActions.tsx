@@ -2,27 +2,22 @@
 
 import { signOut } from "next-auth/react";
 import { useState, useTransition } from "react";
+import { toast } from "react-toastify";
 import { createGroup, joinGroup, listUserGroups } from "@/app/actions/groups";
-import {
-  FeedbackMessage,
-  GroupActionCards,
-  GroupList,
-} from "@/components/group";
+import { HomeGroupCreateOrJoin, HomeGroupList } from "@/components/group";
 import { Header } from "@/components/header";
-import type { HomeWorkSpaceProps } from "@/types";
+import { HomeGroupActionsProps } from "@/types";
 
-export function HomeActions({
+export function HomeGroupActions({
   initialGroups,
   userName,
   userImage,
   initialPage,
   initialTotalPages,
-}: HomeWorkSpaceProps) {
+}: HomeGroupActionsProps) {
   const [groups, setGroups] = useState(initialGroups);
   const [groupName, setGroupName] = useState("");
   const [inviteToken, setInviteToken] = useState("");
-  const [feedback, setFeedback] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const [isPagePending, startPageTransition] = useTransition();
   const [page, setPage] = useState(initialPage);
@@ -30,55 +25,51 @@ export function HomeActions({
 
   function handleCreate(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    clearMessages();
     startTransition(async () => {
       const result = await createGroup({ name: groupName });
       if (!result.success) {
-        setError(
+        toast.error(
           result.fieldErrors?.name?.[0] ??
             result.formError ??
-            "Não foi possível criar o grupo.",
+            "Não foi possível criar o grupo."
         );
         return;
       }
       setGroups((current) => [result.data, ...current]);
       setGroupName("");
-      setFeedback(`Grupo “${result.data.name}” criado.`);
+      toast.success(`Grupo “${result.data.name}” criado.`);
     });
   }
 
   function handleJoin(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    clearMessages();
     startTransition(async () => {
       const result = await joinGroup({ inviteToken });
       if (!result.success) {
-        setError(
+        toast.error(
           result.fieldErrors?.inviteToken?.[0] ??
             result.formError ??
-            "Não foi possível entrar no grupo.",
+            "Não foi possível entrar no grupo."
         );
         return;
       }
       setGroups((current) =>
         current.some((group) => group.id === result.data.id)
           ? current
-          : [result.data, ...current],
+          : [result.data, ...current]
       );
       setInviteToken("");
-      setFeedback(`Você entrou em “${result.data.name}”.`);
+      toast.success(`Você entrou em “${result.data.name}”.`);
     });
   }
 
-  function clearMessages() {
-    setFeedback(null);
-    setError(null);
-  }
-
   async function copyInvite(group: (typeof groups)[number]) {
-    await navigator.clipboard.writeText(group.inviteToken);
-    setError(null);
-    setFeedback("Link de convite copiado.");
+    try {
+      await navigator.clipboard.writeText(group.inviteToken);
+      toast.success("Link de convite copiado.");
+    } catch {
+      toast.error("Não foi possível copiar o convite.");
+    }
   }
 
   function changePage(nextPage: number) {
@@ -111,8 +102,7 @@ export function HomeActions({
             Crie um grupo para começar a dividir despesas.
           </p>
         </div>
-        <FeedbackMessage feedback={feedback} error={error} />
-        <GroupActionCards
+        <HomeGroupCreateOrJoin
           groupName={groupName}
           inviteToken={inviteToken}
           isPending={isPending}
@@ -121,7 +111,7 @@ export function HomeActions({
           onCreate={handleCreate}
           onJoin={handleJoin}
         />
-        <GroupList
+        <HomeGroupList
           groups={groups}
           onCopyInvite={copyInvite}
           page={page}

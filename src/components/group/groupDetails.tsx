@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { getGroupBalances } from "@/app/actions/balances";
 import { getGroupSettlements } from "@/app/actions/settlements";
-import type { GroupDetailsProps } from "@/types";
-import { GroupExpenses } from "./expenses/groupExpenses";
+import type { GroupDetailsProps } from "@/types/group";
+import { GroupExpensesList } from "./expenses/groupExpensesList";
 import { GroupBalances } from "./groupBalances";
 import { GroupCloseButton } from "./groupCloseButton";
 import { GroupNameEditor } from "./groupNameEditor";
@@ -40,7 +40,7 @@ export function GroupDetails({
         initialName={initialGroupName}
         isClosed={isClosed}
       />
-      <GroupExpenses
+      <GroupExpensesList
         {...expenseProps}
         onExpenseCreated={() => {
           void refreshFinancialData();

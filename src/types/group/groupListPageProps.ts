@@ -1,7 +1,7 @@
-import type { GroupSummaryProps } from "./groupProps";
+import type { HomeGroupProps } from "../home/homeGroupProps";
 
 export type GroupListPageProps = {
-  items: GroupSummaryProps[];
+  items: HomeGroupProps[];
   page: number;
   totalPages: number;
 };

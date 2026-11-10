@@ -2,11 +2,12 @@
 
 import { useState, useTransition } from "react";
 import { listGroupExpenses } from "@/app/actions/expenses";
+import { Pagination } from "@/components/pagination";
 import type { GroupExpensesProps } from "@/types";
 import { formatCents } from "@/utils/functions/formatCentsFunction";
 import { GroupExpensesForm } from "./groupExpensesForm";
 
-export function GroupExpenses({
+export function GroupExpensesList({
   groupId,
   members,
   initialExpenses,
@@ -70,27 +71,12 @@ export function GroupExpenses({
           </div>
         )}
         {totalPages > 1 && (
-          <div className="mt-5 flex items-center justify-between">
-            <button
-              type="button"
-              disabled={page === 1 || isPending}
-              onClick={() => changePage(page - 1)}
-              className="rounded-lg border border-(--slate)/30 bg-white px-3 py-2 text-sm font-semibold text-foreground disabled:opacity-40"
-            >
-              Anterior
-            </button>
-            <span className="text-sm text-(--dark-teal)">
-              Página {page} de {totalPages}
-            </span>
-            <button
-              type="button"
-              disabled={page === totalPages || isPending}
-              onClick={() => changePage(page + 1)}
-              className="rounded-lg border border-(--slate)/30 bg-white px-3 py-2 text-sm font-semibold text-foreground disabled:opacity-40"
-            >
-              Próxima
-            </button>
-          </div>
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            isPending={isPending}
+            onPageChange={changePage}
+          />
         )}
       </section>
     </div>

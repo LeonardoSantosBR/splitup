@@ -1,11 +1,17 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { closeGroup } from "@/app/actions/groups";
+import { showCloseGroupConfirmation } from "@/components/alerts";
 
 export function GroupCloseButton({ groupId }: { groupId: string }) {
-  function handleClose() {
-    if (!window.confirm("Tem certeza que deseja fechar este grupo?")) return;
-    void closeGroup(groupId).then(() => window.location.reload());
+  const router = useRouter();
+
+  async function handleClose() {
+    const confirmed = await showCloseGroupConfirmation();
+    if (!confirmed) return;
+    const result = await closeGroup(groupId);
+    if (result.success) router.refresh();
   }
 
   return (

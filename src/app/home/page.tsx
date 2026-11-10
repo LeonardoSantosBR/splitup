@@ -1,11 +1,10 @@
 import { redirect } from "next/navigation";
 import { listUserGroups } from "@/app/actions/groups";
 import { auth } from "@/auth";
-import { HomeActions } from "./homeActions";
+import { HomeGroupActions } from "./homeGroupActions";
 
 export const dynamic = "force-dynamic";
-
-export default async function HomeWorkSpacePage() {
+export default async function HomePage() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
@@ -13,7 +12,7 @@ export default async function HomeWorkSpacePage() {
   if (!result.success) redirect("/login");
 
   return (
-    <HomeActions
+    <HomeGroupActions
       initialGroups={result.data.items}
       initialPage={result.data.page}
       initialTotalPages={result.data.totalPages}

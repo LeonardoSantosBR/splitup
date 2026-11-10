@@ -2,8 +2,9 @@
 
 import { AuthUserSessionAuth } from "@/auth/auth";
 import { prisma } from "@/db/prismaDb";
-import type { GroupListPageProps, GroupSummaryProps } from "@/types";
 import type { ActionResultProps } from "@/types/actionResultProps";
+import type { GroupListPageProps } from "@/types/group";
+import type { HomeGroupProps } from "@/types/home";
 import { errorMessage } from "@/utils/functions/errorMessageFunction";
 import { toGroupSummary } from "@/utils/functions/toGroupSummaryFunction";
 import { validationErrors } from "@/utils/functions/validationErrorsFunction";
@@ -15,7 +16,7 @@ import {
 
 export async function createGroup(
   input: unknown,
-): Promise<ActionResultProps<GroupSummaryProps>> {
+): Promise<ActionResultProps<HomeGroupProps>> {
   const parsed = createGroupSchema.safeParse(input);
   if (!parsed.success)
     return { success: false, fieldErrors: validationErrors(parsed.error) };
@@ -42,7 +43,7 @@ export async function createGroup(
 
 export async function joinGroup(
   input: unknown,
-): Promise<ActionResultProps<GroupSummaryProps>> {
+): Promise<ActionResultProps<HomeGroupProps>> {
   const parsed = joinGroupSchema.safeParse(input);
   if (!parsed.success)
     return { success: false, fieldErrors: validationErrors(parsed.error) };
@@ -104,7 +105,7 @@ export async function listUserGroups(
 
 export async function updateGroupName(
   input: unknown,
-): Promise<ActionResultProps<GroupSummaryProps>> {
+): Promise<ActionResultProps<HomeGroupProps>> {
   const parsed = updateGroupNameSchema.safeParse(input);
   if (!parsed.success)
     return { success: false, fieldErrors: validationErrors(parsed.error) };

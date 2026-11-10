@@ -1,4 +1,4 @@
-export type GroupActionCardsProps = {
+export type HomeGroupCreateOrJoinProps = {
   groupName: string;
   inviteToken: string;
   isPending: boolean;

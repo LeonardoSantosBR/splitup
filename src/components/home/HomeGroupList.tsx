@@ -1,31 +1,31 @@
 "use client";
 
-import { Pagination } from "@/components/group/pagination";
-import type { GroupListProps } from "@/types";
-import { GroupCards } from "./groupCards";
-import { GroupEmptyState } from "./groupEmptyState";
-import { GroupInfoTooltip } from "./groupInfoTooltip";
+import type { HomeGroupListProps } from "@/types/home";
+import { Pagination } from "../pagination";
+import { HomeGroupEmptyState } from "./HomeGroupEmptyState";
+import { HomeGroupCards } from "./HomeGroupCards";
+import { HomeGroupInfoTooltip } from "./HomeGroupInfoTooltip";
 
-export function GroupList({
+export function HomeGroupList({
   groups,
   onCopyInvite,
   page,
   totalPages,
   isPending,
   onPageChange,
-}: GroupListProps) {
+}: HomeGroupListProps) {
   return (
     <section className="mt-10">
       <div className="flex items-center gap-2">
         <h2 className="text-xl font-bold text-foreground">
           Grupos dos quais você participa
         </h2>
-        <GroupInfoTooltip />
+        <HomeGroupInfoTooltip />
       </div>
       {groups.length === 0 ? (
-        <GroupEmptyState />
+        <HomeGroupEmptyState />
       ) : (
-        <GroupCards groups={groups} onCopyInvite={onCopyInvite} />
+        <HomeGroupCards groups={groups} onCopyInvite={onCopyInvite} />
       )}
       <Pagination
         page={page}

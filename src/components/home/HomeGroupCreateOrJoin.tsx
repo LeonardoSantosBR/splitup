@@ -1,8 +1,8 @@
 "use client";
 
-import type { GroupActionCardsProps } from "@/types";
+import type { HomeGroupCreateOrJoinProps } from "@/types/home";
 
-export function GroupActionCards({
+export function HomeGroupCreateOrJoin({
   groupName,
   inviteToken,
   isPending,
@@ -10,7 +10,7 @@ export function GroupActionCards({
   onInviteTokenChange,
   onCreate,
   onJoin,
-}: GroupActionCardsProps) {
+}: HomeGroupCreateOrJoinProps) {
   return (
     <div className="grid gap-5 md:grid-cols-2">
       <form

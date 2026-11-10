@@ -1,12 +1,12 @@
 import Link from "next/link";
-import type { GroupSummaryProps } from "@/types";
+import type { HomeGroupProps } from "@/types/home";
 
-export function GroupCards({
+export function HomeGroupCards({
   groups,
   onCopyInvite,
 }: {
-  groups: GroupSummaryProps[];
-  onCopyInvite: (group: GroupSummaryProps) => void;
+  groups: HomeGroupProps[];
+  onCopyInvite: (group: HomeGroupProps) => void;
 }) {
   return (
     <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
