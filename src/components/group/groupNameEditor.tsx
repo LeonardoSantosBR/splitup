@@ -28,7 +28,7 @@ export function GroupNameEditor({
         setError(
           result.fieldErrors?.name?.[0] ??
             result.formError ??
-            "Não foi possível atualizar o nome."
+            "Não foi possível atualizar o nome.",
         );
         return;
       }
@@ -47,10 +47,10 @@ export function GroupNameEditor({
       }
       const binary = atob(result.data.contentBase64);
       const bytes = Uint8Array.from(binary, (character) =>
-        character.charCodeAt(0)
+        character.charCodeAt(0),
       );
       const url = URL.createObjectURL(
-        new Blob([bytes], { type: "application/pdf" })
+        new Blob([bytes], { type: "application/pdf" }),
       );
       const link = document.createElement("a");
       link.href = url;

@@ -1,8 +1,8 @@
 "use client";
 
-import { ICON_SIZE } from "@/utils/constants";
 import { useState } from "react";
 import { IoInformationCircleOutline } from "react-icons/io5";
+import { ICON_SIZE } from "@/utils/constants";
 
 export function HomeGroupInfoTooltip() {
   const [showInfo, setShowInfo] = useState(false);

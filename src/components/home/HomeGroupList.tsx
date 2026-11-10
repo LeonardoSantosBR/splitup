@@ -2,8 +2,8 @@
 
 import type { HomeGroupListProps } from "@/types/home";
 import { Pagination } from "../pagination";
-import { HomeGroupEmptyState } from "./HomeGroupEmptyState";
 import { HomeGroupCards } from "./HomeGroupCards";
+import { HomeGroupEmptyState } from "./HomeGroupEmptyState";
 import { HomeGroupInfoTooltip } from "./HomeGroupInfoTooltip";
 
 export function HomeGroupList({

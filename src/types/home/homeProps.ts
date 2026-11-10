@@ -1,6 +1,6 @@
-import { HomeGroupProps } from "./homeGroupProps";
+import type { HomeGroupProps } from "./homeGroupProps";
 
-export type HomeGroupActionsProps = {
+export type HomeProps = {
   initialGroups: HomeGroupProps[];
   initialPage: number;
   initialTotalPages: number;
