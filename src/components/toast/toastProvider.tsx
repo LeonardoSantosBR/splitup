@@ -7,7 +7,7 @@ export function ToastProvider() {
   return (
     <ToastContainer
       position="top-center"
-      autoClose={3500}
+      autoClose={1700}
       newestOnTop
       theme="light"
     />
