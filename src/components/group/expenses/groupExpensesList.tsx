@@ -5,7 +5,7 @@ import { listGroupExpenses } from "@/app/actions/expenses";
 import { Pagination } from "@/components/pagination";
 import type { GroupExpensesProps } from "@/types";
 import { formatCents } from "@/utils/functions/formatCentsFunction";
-import { GroupExpensesForm } from "./groupExpensesForm";
+import { GroupExpensesForm } from "./GroupExpensesForm";
 
 export function GroupExpensesList({
   groupId,

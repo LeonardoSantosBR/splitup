@@ -1,2 +1,2 @@
-export * from "./loginBrandPanel";
-export * from "./loginForm";
+export * from "./LoginBrandPanel";
+export * from "./LoginForm";

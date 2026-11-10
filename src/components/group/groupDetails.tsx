@@ -4,11 +4,11 @@ import { useState } from "react";
 import { getGroupBalances } from "@/app/actions/balances";
 import { getGroupSettlements } from "@/app/actions/settlements";
 import type { GroupDetailsProps } from "@/types/group";
-import { GroupExpensesList } from "./expenses/groupExpensesList";
-import { GroupBalances } from "./groupBalances";
-import { GroupCloseButton } from "./groupCloseButton";
-import { GroupNameEditor } from "./groupNameEditor";
-import { GroupSettlements } from "./groupSettlements";
+import { GroupExpensesList } from "./expenses";
+import { GroupBalances } from "./GroupBalances";
+import { GroupCloseButton } from "./GroupCloseButton";
+import { GroupNameEditor } from "./GroupNameEditor";
+import { GroupSettlements } from "./GroupSettlements";
 
 export function GroupDetails({
   initialBalances,

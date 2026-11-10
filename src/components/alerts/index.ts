@@ -1,1 +1,1 @@
-export { showCloseGroupConfirmation } from "./confirmationAlert";
+export { showCloseGroupConfirmation } from "./ConfirmationAlert";
