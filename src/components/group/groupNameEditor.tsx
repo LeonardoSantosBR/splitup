@@ -5,6 +5,7 @@ import { FaFileDownload } from "react-icons/fa";
 import { MdOutlineEdit } from "react-icons/md";
 import { updateGroupName } from "@/app/actions/groups";
 import { getGroupReportPdf } from "@/app/actions/reports";
+import { ICON_SIZE } from "@/utils/constants";
 
 export function GroupNameEditor({
   groupId,
@@ -27,7 +28,7 @@ export function GroupNameEditor({
         setError(
           result.fieldErrors?.name?.[0] ??
             result.formError ??
-            "Não foi possível atualizar o nome.",
+            "Não foi possível atualizar o nome."
         );
         return;
       }
@@ -46,10 +47,10 @@ export function GroupNameEditor({
       }
       const binary = atob(result.data.contentBase64);
       const bytes = Uint8Array.from(binary, (character) =>
-        character.charCodeAt(0),
+        character.charCodeAt(0)
       );
       const url = URL.createObjectURL(
-        new Blob([bytes], { type: "application/pdf" }),
+        new Blob([bytes], { type: "application/pdf" })
       );
       const link = document.createElement("a");
       link.href = url;
@@ -93,7 +94,7 @@ export function GroupNameEditor({
       ) : (
         <div className="flex items-center gap-3">
           <h1 className="text-4xl font-bold text-foreground">{name}</h1>
-          <MdOutlineEdit size={25} onClick={() => setEditing(true)} />
+          <MdOutlineEdit size={ICON_SIZE} onClick={() => setEditing(true)} />
           <button
             type="button"
             onClick={downloadReport}
@@ -108,7 +109,7 @@ export function GroupNameEditor({
               isClosed ? "text-(--primary)" : "cursor-not-allowed text-gray-400"
             } disabled:opacity-100`}
           >
-            <FaFileDownload size={25} />
+            <FaFileDownload size={ICON_SIZE} />
           </button>
         </div>
       )}

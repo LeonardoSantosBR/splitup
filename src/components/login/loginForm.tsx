@@ -1,5 +1,6 @@
 import { FcGoogle } from "react-icons/fc";
 import type { LoginFormProps } from "@/types";
+import { ICON_SIZE } from "@/utils/constants";
 
 export function LoginForm({ signInAction }: LoginFormProps) {
   return (
@@ -19,7 +20,7 @@ export function LoginForm({ signInAction }: LoginFormProps) {
             type="submit"
             className="flex w-full items-center justify-center gap-3 rounded-xl border border-(--slate)/35 bg-white px-5 py-3.5 font-semibold text-foreground shadow-sm transition hover:border-(--primary) hover:shadow-md focus:outline-none focus:ring-4 focus:ring-(--primary)/20"
           >
-            <FcGoogle size={25} />
+            <FcGoogle size={ICON_SIZE} />
             Continuar com Google
           </button>
         </form>
