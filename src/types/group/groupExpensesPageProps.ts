@@ -1,4 +1,4 @@
-export type ExpenseSummaryProps = {
+export type GroupExpenseProps = {
   id: string;
   description: string;
   amountCents: number;
@@ -6,8 +6,8 @@ export type ExpenseSummaryProps = {
   occurredAt: string;
 };
 
-export type ExpensePageProps = {
-  items: ExpenseSummaryProps[];
+export type GroupExpensePageProps = {
+  items: GroupExpenseProps[];
   page: number;
   totalPages: number;
 };

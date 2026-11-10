@@ -2,11 +2,8 @@
 
 import { AuthUserGroupMember } from "@/auth/auth";
 import { prisma } from "@/db/prismaDb";
+import { GroupExpensePageProps, GroupExpenseProps } from "@/types";
 import type { ActionResultProps } from "@/types/actionResultProps";
-import type {
-  ExpensePageProps,
-  ExpenseSummaryProps,
-} from "@/types/expenseSummaryProps";
 import { EXPENSES_PAGE_SIZE } from "@/utils/constants";
 import { splitEqually } from "@/utils/domain/splitsDomain";
 import { errorMessage } from "@/utils/functions/errorMessageFunction";
@@ -15,8 +12,8 @@ import { validationErrors } from "@/utils/functions/validationErrorsFunction";
 import { createExpenseSchema } from "@/utils/schemas/expenseSchema";
 
 export async function createExpense(
-  input: unknown,
-): Promise<ActionResultProps<ExpenseSummaryProps>> {
+  input: unknown
+): Promise<ActionResultProps<GroupExpenseProps>> {
   const parsed = createExpenseSchema.safeParse(input);
   if (!parsed.success)
     return { success: false, fieldErrors: validationErrors(parsed.error) };
@@ -37,7 +34,7 @@ export async function createExpense(
     if (
       memberIds.some(
         (memberId) =>
-          !group.members.some((member) => member.userId === memberId),
+          !group.members.some((member) => member.userId === memberId)
       )
     )
       return {
@@ -60,7 +57,7 @@ export async function createExpense(
       },
     });
     const payer = group.members.find(
-      (member) => member.userId === expense.payerId,
+      (member) => member.userId === expense.payerId
     );
     return {
       success: true,
@@ -82,8 +79,8 @@ export async function createExpense(
 
 export async function listGroupExpenses(
   groupId: string,
-  page = 1,
-): Promise<ActionResultProps<ExpensePageProps>> {
+  page = 1
+): Promise<ActionResultProps<GroupExpensePageProps>> {
   try {
     await AuthUserGroupMember(groupId);
     const safePage = Math.max(1, Math.floor(page));

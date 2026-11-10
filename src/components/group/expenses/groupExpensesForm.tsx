@@ -2,13 +2,13 @@
 
 import { useState, useTransition } from "react";
 import { createExpense } from "@/app/actions/expenses";
-import type { ExpenseFormProps } from "@/types/expenseFormProps";
+import { groupExpensesFormProps } from "@/types";
 
 export function GroupExpensesForm({
   groupId,
   members,
   onCreated,
-}: ExpenseFormProps) {
+}: groupExpensesFormProps) {
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
   const [payerId, setPayerId] = useState(members[0]?.id ?? "");

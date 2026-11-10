@@ -1,5 +1,5 @@
-import type { Member } from "../expenseFormProps";
-import type { ExpenseSummaryProps } from "../expenseSummaryProps";
+import type { Member } from "./groupExpensesFormProps";
+import type { ExpenseSummaryProps } from "./groupExpensesPageProps";
 
 export type GroupExpensesProps = {
   groupId: string;
