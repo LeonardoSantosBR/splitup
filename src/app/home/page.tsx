@@ -11,6 +11,8 @@ export default async function HomePage() {
   const result = await listUserGroups(1);
   if (!result.success) redirect("/login");
 
+  console.log("PAGE", result);
+
   return (
     <Home
       initialGroups={result.data.items}

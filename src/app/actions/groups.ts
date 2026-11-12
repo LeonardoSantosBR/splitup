@@ -30,7 +30,12 @@ export async function createGroup(
       await transaction.groupMember.create({
         data: { groupId: createdGroup.id, userId: user.id },
       });
-      return createdGroup;
+      return transaction.group.findUniqueOrThrow({
+        where: { id: createdGroup.id },
+        include: {
+          members: { include: { user: { select: { image: true } } } },
+        },
+      });
     });
     return { success: true, data: toGroupSummary(group) };
   } catch (error) {

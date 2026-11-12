@@ -31,9 +31,10 @@ export function HomeGroupCards({
           </div>
           <Link
             href={`/home/${group.id}`}
-            className="mt-3 block text-xs text-(--slate)"
+            className="block text-xs text-(--slate)"
           >
-            Criado em {new Intl.DateTimeFormat("pt-BR").format(new Date(group.createdAt))}
+            Criado em{" "}
+            {new Intl.DateTimeFormat("pt-BR").format(new Date(group.createdAt))}
           </Link>
           <button
             type="button"
