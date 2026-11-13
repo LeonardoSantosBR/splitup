@@ -12,10 +12,10 @@ export function HomeGroupCreateOrJoin({
   onJoin,
 }: HomeGroupCreateOrJoinProps) {
   return (
-    <div className="grid gap-5 md:grid-cols-2">
+    <div className="grid min-w-0 grid-cols-1 gap-4 sm:gap-5 md:grid-cols-2">
       <form
         onSubmit={onCreate}
-        className="rounded-2xl bg-(--dark-teal) p-6 text-white shadow-sm"
+        className="min-w-0 rounded-2xl bg-(--dark-teal) p-4 text-white shadow-sm sm:p-6"
       >
         <p className="text-sm font-semibold uppercase tracking-wider text-white/65">
           Novo grupo
@@ -45,7 +45,7 @@ export function HomeGroupCreateOrJoin({
       </form>
       <form
         onSubmit={onJoin}
-        className="rounded-2xl border border-(--slate)/25 bg-white p-6 shadow-sm"
+        className="min-w-0 rounded-2xl border border-(--slate)/25 bg-white p-4 shadow-sm sm:p-6"
       >
         <p className="text-sm font-semibold uppercase tracking-wider text-(--primary)">
           Convite

@@ -10,11 +10,11 @@ export function HomeGroupCards({
   onCopyInvite: (group: HomeGroupProps) => void;
 }) {
   return (
-    <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="mt-4 grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {groups.map((group) => (
         <article
           key={group.id}
-          className="flex h-full min-h-28 flex-col rounded-2xl bg-white p-5 shadow-sm ring-1 ring-(--slate)/15"
+          className="flex h-full min-w-0 min-h-28 flex-col rounded-2xl bg-white p-4 shadow-sm ring-1 ring-(--slate)/15 sm:p-5"
         >
           <div className="flex min-h-10 items-start justify-between gap-3">
             <Link

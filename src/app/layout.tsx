@@ -15,7 +15,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="pt-BR" className="h-full antialiased">
-      <body className="min-h-full flex flex-col">
+      <body className="flex min-h-full w-full flex-col overflow-x-hidden">
         {children}
         <ToastProvider />
       </body>
