@@ -6,3 +6,4 @@ export * from "./group";
 export * from "./headerProps";
 export * from "./home";
 export * from "./loginFormProps";
+export * from "./paginationProps";

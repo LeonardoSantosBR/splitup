@@ -28,7 +28,7 @@ export function GroupNameEditor({
         setError(
           result.fieldErrors?.name?.[0] ??
             result.formError ??
-            "Não foi possível atualizar o nome.",
+            "Não foi possível atualizar o nome."
         );
         return;
       }
@@ -47,10 +47,10 @@ export function GroupNameEditor({
       }
       const binary = atob(result.data.contentBase64);
       const bytes = Uint8Array.from(binary, (character) =>
-        character.charCodeAt(0),
+        character.charCodeAt(0)
       );
       const url = URL.createObjectURL(
-        new Blob([bytes], { type: "application/pdf" }),
+        new Blob([bytes], { type: "application/pdf" })
       );
       const link = document.createElement("a");
       link.href = url;
@@ -92,25 +92,38 @@ export function GroupNameEditor({
           </button>
         </div>
       ) : (
-        <div className="flex items-center gap-3">
-          <h1 className="text-4xl font-bold text-foreground">{name}</h1>
-          <MdOutlineEdit size={ICON_SIZE} onClick={() => setEditing(true)} />
-          <button
-            type="button"
-            onClick={downloadReport}
-            disabled={!isClosed || isPending}
-            aria-label="Baixar relatório em PDF"
-            title={
-              isClosed
-                ? "Baixar relatório em PDF"
-                : "Encerre o grupo para baixar o relatório"
-            }
-            className={`transition ${
-              isClosed ? "text-(--primary)" : "cursor-not-allowed text-gray-400"
-            } disabled:opacity-100`}
-          >
-            <FaFileDownload size={ICON_SIZE} />
-          </button>
+        <div className="flex items-center justify-between gap-4">
+          <h1 className="min-w-0 flex-1 truncate text-4xl font-bold text-foreground">
+            {name}
+          </h1>
+          <div className="ml-auto flex shrink-0 items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setEditing(true)}
+              aria-label="Editar nome do grupo"
+              className="cursor-pointer text-foreground transition hover:text-(--primary)"
+            >
+              <MdOutlineEdit size={ICON_SIZE} />
+            </button>
+            <button
+              type="button"
+              onClick={downloadReport}
+              disabled={!isClosed || isPending}
+              aria-label="Baixar relatório em PDF"
+              title={
+                isClosed
+                  ? "Baixar relatório em PDF"
+                  : "Encerre o grupo para baixar o relatório"
+              }
+              className={`transition ${
+                isClosed
+                  ? "text-(--primary)"
+                  : "cursor-not-allowed text-gray-400"
+              } disabled:opacity-100`}
+            >
+              <FaFileDownload size={ICON_SIZE} />
+            </button>
+          </div>
         </div>
       )}
       {error && <p className="mt-2 text-sm text-(--primary)">{error}</p>}

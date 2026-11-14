@@ -6,5 +6,5 @@ export type HomeGroupListProps = {
   page: number;
   totalPages: number;
   isPending: boolean;
-  onPageChange: (page: number) => void;
+  onChangePage: (page: number) => void;
 };

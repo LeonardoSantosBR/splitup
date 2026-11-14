@@ -12,7 +12,7 @@ export function HomeGroupList({
   page,
   totalPages,
   isPending,
-  onPageChange,
+  onChangePage,
 }: HomeGroupListProps) {
   return (
     <section className="mt-10">
@@ -31,7 +31,7 @@ export function HomeGroupList({
         page={page}
         totalPages={totalPages}
         isPending={isPending}
-        onPageChange={onPageChange}
+        onChangePage={onChangePage}
       />
     </section>
   );

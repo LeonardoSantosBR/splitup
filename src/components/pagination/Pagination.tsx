@@ -1,15 +1,10 @@
-type PaginationProps = {
-  page: number;
-  totalPages: number;
-  isPending: boolean;
-  onPageChange: (page: number) => void;
-};
+import { PaginationProps } from "@/types";
 
 export function Pagination({
   page,
   totalPages,
   isPending,
-  onPageChange,
+  onChangePage,
 }: PaginationProps) {
   if (totalPages <= 1) return null;
 
@@ -18,7 +13,7 @@ export function Pagination({
       <button
         type="button"
         disabled={page === 1 || isPending}
-        onClick={() => onPageChange(page - 1)}
+        onClick={() => onChangePage(page - 1)}
         className="rounded-lg border border-(--slate)/30 bg-white px-3 py-2 text-sm font-semibold text-foreground disabled:opacity-40"
       >
         Anterior
@@ -29,7 +24,7 @@ export function Pagination({
       <button
         type="button"
         disabled={page === totalPages || isPending}
-        onClick={() => onPageChange(page + 1)}
+        onClick={() => onChangePage(page + 1)}
         className="rounded-lg border border-(--slate)/30 bg-white px-3 py-2 text-sm font-semibold text-foreground disabled:opacity-40"
       >
         Próxima
