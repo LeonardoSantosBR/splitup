@@ -2,7 +2,7 @@
 
 Aplicação web para dividir despesas em grupos, acompanhar saldos e simplificar dívidas.
 
-<img width="494" height="505" alt="Image" src="https://github.com/user-attachments/assets/33dc97f3-e009-483f-aea6-48b15532ed0d" />
+<img width="828" height="301" alt="Gemini_Generated_Image_881wd5881wd5881w-removebg-preview" src="https://github.com/user-attachments/assets/56593d2c-45b9-444f-ad4f-42607a1e6066" />
 
 ## Stack
 
