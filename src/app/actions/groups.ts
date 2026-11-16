@@ -6,7 +6,7 @@ import type { ActionResultProps } from "@/types/actionResultProps";
 import type { GroupListPageProps } from "@/types/group";
 import type { HomeGroupProps } from "@/types/home";
 import { errorMessage } from "@/utils/functions/errorMessageFunction";
-import { toGroupSummary } from "@/utils/functions/toGroupSummaryFunction";
+import { groupDataStandard } from "@/utils/functions/groupDataStandardFunction";
 import { validationErrors } from "@/utils/functions/validationErrorsFunction";
 import {
   createGroupSchema,
@@ -15,7 +15,7 @@ import {
 } from "@/utils/schemas/groupSchema";
 
 export async function createGroup(
-  input: unknown,
+  input: unknown
 ): Promise<ActionResultProps<HomeGroupProps>> {
   const parsed = createGroupSchema.safeParse(input);
   if (!parsed.success)
@@ -37,7 +37,7 @@ export async function createGroup(
         },
       });
     });
-    return { success: true, data: toGroupSummary(group) };
+    return { success: true, data: groupDataStandard(group) };
   } catch (error) {
     return {
       success: false,
@@ -47,7 +47,7 @@ export async function createGroup(
 }
 
 export async function joinGroup(
-  input: unknown,
+  input: unknown
 ): Promise<ActionResultProps<HomeGroupProps>> {
   const parsed = joinGroupSchema.safeParse(input);
   if (!parsed.success)
@@ -66,7 +66,13 @@ export async function joinGroup(
       create: { groupId: group.id, userId: user.id },
       update: {},
     });
-    return { success: true, data: toGroupSummary(group) };
+    const joinedGroup = await prisma.group.findUniqueOrThrow({
+      where: { id: group.id },
+      include: {
+        members: { include: { user: { select: { image: true } } } },
+      },
+    });
+    return { success: true, data: groupDataStandard(joinedGroup) };
   } catch (error) {
     return {
       success: false,
@@ -76,7 +82,7 @@ export async function joinGroup(
 }
 
 export async function listUserGroups(
-  page = 1,
+  page = 1
 ): Promise<ActionResultProps<GroupListPageProps>> {
   try {
     const user = await AuthUserSessionAuth();
@@ -101,7 +107,7 @@ export async function listUserGroups(
     return {
       success: true,
       data: {
-        items: memberships.map(({ group }) => toGroupSummary(group)),
+        items: memberships.map(({ group }) => groupDataStandard(group)),
         page: safePage,
         totalPages: Math.max(1, Math.ceil(total / pageSize)),
       },
@@ -115,7 +121,7 @@ export async function listUserGroups(
 }
 
 export async function updateGroupName(
-  input: unknown,
+  input: unknown
 ): Promise<ActionResultProps<HomeGroupProps>> {
   const parsed = updateGroupNameSchema.safeParse(input);
   if (!parsed.success)
@@ -133,7 +139,7 @@ export async function updateGroupName(
       where: { id: parsed.data.groupId },
       data: { name: parsed.data.name },
     });
-    return { success: true, data: toGroupSummary(group) };
+    return { success: true, data: groupDataStandard(group) };
   } catch (error) {
     return {
       success: false,
@@ -143,7 +149,7 @@ export async function updateGroupName(
 }
 
 export async function closeGroup(
-  groupId: string,
+  groupId: string
 ): Promise<ActionResultProps<null>> {
   try {
     const user = await AuthUserSessionAuth();

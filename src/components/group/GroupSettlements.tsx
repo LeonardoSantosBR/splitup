@@ -1,39 +1,17 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
-import {
-  createSettlement,
-  getGroupSettlements,
-} from "@/app/actions/settlements";
+import { useEffect, useState } from "react";
 import type { GroupSettlementsProps } from "@/types";
 import { formatCents } from "@/utils/functions/formatCentsFunction";
 
 export function GroupSettlements({
-  groupId,
   settlements: initialSettlements,
-  onSettled,
 }: GroupSettlementsProps & { groupId: string; onSettled?: () => void }) {
   const [settlements, setSettlements] = useState(initialSettlements);
-  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
     setSettlements(initialSettlements);
   }, [initialSettlements]);
-
-  function settle(settlement: (typeof settlements)[number]) {
-    startTransition(async () => {
-      const result = await createSettlement({
-        groupId,
-        ...settlement,
-        amountCents: settlement.amountCents,
-      });
-      if (result.success) {
-        const updated = await getGroupSettlements(groupId);
-        if (updated.success) setSettlements(updated.data.settlements);
-        onSettled?.();
-      }
-    });
-  }
 
   return (
     <section className="mt-8">
@@ -56,14 +34,6 @@ export function GroupSettlements({
                   {formatCents(settlement.amountCents)}
                 </span>
               </p>
-              <button
-                type="button"
-                disabled={isPending}
-                onClick={() => settle(settlement)}
-                className="rounded-lg bg-(--primary) px-3 py-2 text-sm font-semibold text-white disabled:opacity-50"
-              >
-                Registrar pagamento
-              </button>
             </article>
           ))}
         </div>

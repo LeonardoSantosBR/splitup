@@ -38,7 +38,6 @@ export function Home({
         );
         return;
       }
-      console.log(result);
       setGroups((current) => [result.data, ...current]);
       setGroupName("");
       toast.success(`Grupo “${result.data.name}” criado.`);

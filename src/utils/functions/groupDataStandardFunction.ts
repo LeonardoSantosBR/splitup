@@ -1,6 +1,6 @@
 import type { HomeGroupProps } from "@/types/home/homeGroupProps";
 
-export function toGroupSummary(group: {
+export function groupDataStandard(group: {
   id: string;
   name: string;
   inviteToken: string;
