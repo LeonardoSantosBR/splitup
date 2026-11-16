@@ -1,8 +1,8 @@
 "use client";
 
 import Avatar from "@mui/material/Avatar";
-import Image from "next/image";
 import type { HeaderProps } from "@/types";
+import { HeaderBrand } from "./HeaderBrand";
 
 export function Header({
   userName,
@@ -13,17 +13,7 @@ export function Header({
   return (
     <header className="border-b border-(--slate)/20 bg-white">
       <div className="mx-auto flex min-h-16 w-full min-w-0 max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:min-h-18 sm:px-6 sm:py-4">
-        <div className="flex items-center gap-3">
-          <span className="relative h-9 w-9 overflow-hidden rounded-xl">
-            <Image
-              src="/icon.png"
-              alt="Logo do SplitUp"
-              fill
-              className="scale-[0.9] object-contain"
-            />
-          </span>
-          <span className="font-bold text-foreground">SplitUp</span>
-        </div>
+        <HeaderBrand />
         <div className="flex min-w-0 items-center gap-2 sm:gap-5">
           <div
             onClick={onViewProfile}

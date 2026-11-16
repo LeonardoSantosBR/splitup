@@ -1,13 +1,10 @@
-export function LoginBrandPanel() {
+import { LoginBrand } from "./LoginBrand";
+
+export function Login() {
   return (
     <div className="flex min-h-140 flex-col justify-between bg-(--dark-teal) p-8 text-white sm:p-12">
       <div>
-        <div className="mb-16 flex items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-(--primary) text-lg font-black">
-            S
-          </span>
-          <span className="text-xl font-bold tracking-tight">SplitUp</span>
-        </div>
+        <LoginBrand />
         <p className="mb-5 max-w-sm text-sm font-semibold uppercase tracking-[0.22em] text-white/65">
           Despesas sem complicação
         </p>

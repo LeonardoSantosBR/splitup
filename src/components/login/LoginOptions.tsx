@@ -2,7 +2,7 @@ import { FcGoogle } from "react-icons/fc";
 import type { LoginFormProps } from "@/types";
 import { ICON_SIZE } from "@/utils/constants";
 
-export function LoginForm({ signInAction }: LoginFormProps) {
+export function LoginOptions({ signInAction }: LoginFormProps) {
   return (
     <div className="flex min-h-140 flex-col justify-center p-8 sm:p-12">
       <div className="mx-auto w-full max-w-sm">
