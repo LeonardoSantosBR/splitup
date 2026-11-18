@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getGroupBalances } from "@/app/actions/balances";
 import { getGroupSettlements } from "@/app/actions/settlements";
@@ -31,8 +32,11 @@ export default async function GroupByIdPage({
   });
 
   if (!group) redirect("/home");
-  const balancesResult = await getGroupBalances(groupId);
-  const settlementsResult = await getGroupSettlements(groupId);
+
+  const [balancesResult, settlementsResult] = await Promise.all([
+    getGroupBalances(groupId),
+    getGroupSettlements(groupId),
+  ]);
 
   return (
     <main className="min-h-screen bg-background px-4 py-6 sm:px-6 sm:py-10">
@@ -44,9 +48,9 @@ export default async function GroupByIdPage({
               name: user.name ?? user.email ?? "Membro",
             }))}
           />
-          <a href="/home" className="text-sm font-semibold text-(--primary)">
+          <Link href="/home" className="text-sm font-semibold text-(--primary)">
             ← Voltar para grupos
-          </a>
+          </Link>
         </div>
         <GroupDetails
           groupId={group.id}

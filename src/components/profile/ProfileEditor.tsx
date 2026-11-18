@@ -1,11 +1,14 @@
 "use client";
 
 import Avatar from "@mui/material/Avatar";
+import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
+import { IoArrowBack } from "react-icons/io5";
 import { toast } from "react-toastify";
 import { updateUserProfile, type UserProfile } from "@/app/actions/profile";
 
 export function ProfileEditor({ profile }: { profile: UserProfile }) {
+  const router = useRouter();
   const [name, setName] = useState(profile.name);
   const [isPending, startTransition] = useTransition();
 
@@ -19,11 +22,20 @@ export function ProfileEditor({ profile }: { profile: UserProfile }) {
       }
       setName(result.data.name);
       toast.success("Perfil atualizado.");
+      router.back();
     });
   }
 
   return (
     <form onSubmit={saveProfile} className="mx-auto mt-8 max-w-xl rounded-2xl bg-white p-6 shadow-sm">
+      <button
+        type="button"
+        onClick={() => router.back()}
+        className="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-(--primary) transition hover:opacity-75"
+      >
+        <IoArrowBack aria-hidden="true" />
+        Voltar
+      </button>
       <div className="flex items-center gap-4">
         <Avatar src={profile.image ?? undefined} alt={name} sx={{ width: 64, height: 64 }} />
         <div>
