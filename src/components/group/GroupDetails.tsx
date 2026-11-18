@@ -20,7 +20,7 @@ export function GroupDetails({
 }: GroupDetailsProps) {
   const [balances, setBalances] = useState(initialBalances.balances);
   const [settlements, setSettlements] = useState(
-    initialSettlements.settlements,
+    initialSettlements.settlements
   );
 
   async function refreshFinancialData() {

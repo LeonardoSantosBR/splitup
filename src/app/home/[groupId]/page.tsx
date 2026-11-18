@@ -3,7 +3,7 @@ import { getGroupBalances } from "@/app/actions/balances";
 import { getGroupSettlements } from "@/app/actions/settlements";
 import { auth } from "@/auth";
 import { AuthUserGroupMember } from "@/auth/auth";
-import { GroupDetails } from "@/components/group";
+import { GroupDetails, GroupMembersList } from "@/components/group";
 import { prisma } from "@/db/prismaDb";
 
 export const dynamic = "force-dynamic";
@@ -35,12 +35,15 @@ export default async function GroupByIdPage({
   const settlementsResult = await getGroupSettlements(groupId);
 
   return (
-    <main className="min-h-screen bg-background px-6 py-10">
-      <div className="mx-auto max-w-5xl">
-        <div className="flex items-center justify-between gap-4">
-          <p className="text-sm text-(--dark-teal)">
-            {group.members.length} participante(s)
-          </p>
+    <main className="min-h-screen bg-background px-4 py-6 sm:px-6 sm:py-10">
+      <div className="mx-auto min-w-0 max-w-5xl">
+        <div className="flex items-center justify-between gap-3">
+          <GroupMembersList
+            members={group.members.map(({ user }) => ({
+              id: user.id,
+              name: user.name ?? user.email ?? "Membro",
+            }))}
+          />
           <a href="/home" className="text-sm font-semibold text-(--primary)">
             ← Voltar para grupos
           </a>

@@ -8,4 +8,5 @@ export * from "./GroupBalances";
 export * from "./GroupCloseButton";
 export * from "./GroupDetails";
 export * from "./GroupNameEditor";
+export * from "./GroupMembersList";
 export * from "./GroupSettlements";

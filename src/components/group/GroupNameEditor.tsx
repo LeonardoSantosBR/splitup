@@ -92,8 +92,8 @@ export function GroupNameEditor({
           </button>
         </div>
       ) : (
-        <div className="flex items-center justify-between gap-4">
-          <h1 className="min-w-0 flex-1 truncate text-4xl font-bold text-foreground">
+        <div className="flex min-w-0 items-center justify-between gap-3">
+          <h1 className="min-w-0 flex-1 truncate text-2xl font-bold text-foreground sm:text-4xl">
             {name}
           </h1>
           <div className="ml-auto flex shrink-0 items-center gap-2">
