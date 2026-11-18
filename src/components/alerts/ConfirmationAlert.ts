@@ -15,3 +15,21 @@ export async function showCloseGroupConfirmation(): Promise<boolean> {
 
   return result.isConfirmed;
 }
+
+export async function showDeleteExpenseConfirmation(
+  description: string,
+): Promise<boolean> {
+  const result = await Swal.fire({
+    title: "Excluir despesa?",
+    text: `A despesa "${description}" será removida e os saldos serão recalculados.`,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Excluir despesa",
+    cancelButtonText: "Cancelar",
+    reverseButtons: true,
+    confirmButtonColor: "#ff0d51",
+    cancelButtonColor: "#7a8c89",
+  });
+
+  return result.isConfirmed;
+}

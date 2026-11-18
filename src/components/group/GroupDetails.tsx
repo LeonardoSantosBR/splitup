@@ -45,6 +45,9 @@ export function GroupDetails({
         onExpenseCreated={() => {
           void refreshFinancialData();
         }}
+        onExpenseDeleted={() => {
+          void refreshFinancialData();
+        }}
       />
       <GroupBalances balances={balances} />
       <GroupSettlements

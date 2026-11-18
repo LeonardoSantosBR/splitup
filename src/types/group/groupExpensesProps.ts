@@ -7,4 +7,5 @@ export type GroupExpensesProps = {
   initialExpenses: ExpenseSummaryProps[];
   initialTotalPages: number;
   onExpenseCreated?: () => void;
+  onExpenseDeleted?: () => void;
 };

@@ -115,3 +115,33 @@ export async function listGroupExpenses(
     };
   }
 }
+
+export async function deleteExpense(
+  groupId: string,
+  expenseId: string,
+): Promise<ActionResultProps<null>> {
+  try {
+    await AuthUserGroupMember(groupId);
+    const expense = await prisma.expense.findUnique({
+      where: { id: expenseId },
+      select: { groupId: true },
+    });
+    if (!expense || expense.groupId !== groupId)
+      return { success: false, formError: "Despesa não encontrada." };
+
+    const group = await prisma.group.findUnique({
+      where: { id: groupId },
+      select: { isClosed: true },
+    });
+    if (group?.isClosed)
+      return { success: false, formError: "Este grupo já foi encerrado." };
+
+    await prisma.expense.delete({ where: { id: expenseId } });
+    return { success: true, data: null };
+  } catch (error) {
+    return {
+      success: false,
+      formError: errorMessage(error, "Não foi possível excluir a despesa."),
+    };
+  }
+}

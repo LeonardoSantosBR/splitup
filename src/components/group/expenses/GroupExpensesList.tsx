@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { listGroupExpenses } from "@/app/actions/expenses";
+import { deleteExpense, listGroupExpenses } from "@/app/actions/expenses";
+import { showDeleteExpenseConfirmation } from "@/components/alerts";
 import { Pagination } from "@/components/pagination";
 import type { GroupExpensesProps } from "@/types";
 import { formatCents } from "@/utils/functions/formatCentsFunction";
@@ -13,6 +14,7 @@ export function GroupExpensesList({
   initialExpenses,
   initialTotalPages,
   onExpenseCreated,
+  onExpenseDeleted,
 }: GroupExpensesProps) {
   const [expenses, setExpenses] = useState(initialExpenses);
   const [page, setPage] = useState(1);
@@ -26,6 +28,21 @@ export function GroupExpensesList({
       setExpenses(result.data.items);
       setPage(result.data.page);
       setTotalPages(result.data.totalPages);
+    });
+  }
+
+  async function removeExpense(expense: (typeof expenses)[number]) {
+    if (!(await showDeleteExpenseConfirmation(expense.description))) return;
+    startTransition(async () => {
+      const result = await deleteExpense(groupId, expense.id);
+      if (!result.success) return;
+      const updated = await listGroupExpenses(groupId, page);
+      if (updated.success) {
+        setExpenses(updated.data.items);
+        setPage(Math.min(page, updated.data.totalPages));
+        setTotalPages(updated.data.totalPages);
+      }
+      onExpenseDeleted?.();
     });
   }
 
@@ -62,9 +79,19 @@ export function GroupExpensesList({
                       Pago por {expense.payerName}
                     </p>
                   </div>
-                  <strong className="text-(--primary)">
-                    {formatCents(expense.amountCents)}
-                  </strong>
+                  <div className="flex shrink-0 flex-col items-end gap-2">
+                    <strong className="text-(--primary)">
+                      {formatCents(expense.amountCents)}
+                    </strong>
+                    <button
+                      type="button"
+                      onClick={() => void removeExpense(expense)}
+                      disabled={isPending}
+                      className="text-xs font-semibold text-(--slate) hover:text-(--primary) disabled:opacity-50"
+                    >
+                      Excluir
+                    </button>
+                  </div>
                 </div>
               </article>
             ))}
