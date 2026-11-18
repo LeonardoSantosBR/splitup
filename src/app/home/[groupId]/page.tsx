@@ -42,15 +42,15 @@ export default async function GroupByIdPage({
     <main className="min-h-screen bg-background px-4 py-6 sm:px-6 sm:py-10">
       <div className="mx-auto min-w-0 max-w-5xl">
         <div className="flex items-center justify-between gap-3">
+          <Link href="/home" className="text-sm font-semibold text-(--primary)">
+            ← Voltar para grupos
+          </Link>
           <GroupMembersList
             members={group.members.map(({ user }) => ({
               id: user.id,
               name: user.name ?? user.email ?? "Membro",
             }))}
           />
-          <Link href="/home" className="text-sm font-semibold text-(--primary)">
-            ← Voltar para grupos
-          </Link>
         </div>
         <GroupDetails
           groupId={group.id}

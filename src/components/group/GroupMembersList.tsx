@@ -17,7 +17,7 @@ export function GroupMembersList({ members }: { members: Member[] }) {
         Participantes ({members.length})
       </button>
       {isOpen && (
-        <div className="absolute left-0 z-20 mt-2 w-64 max-w-[calc(100vw-2rem)] rounded-xl bg-white p-3 shadow-lg ring-1 ring-(--slate)/20 sm:right-0 sm:left-auto">
+        <div className="absolute right-0 z-20 mt-2 w-64 max-w-[calc(100vw-2rem)] rounded-xl bg-white p-3 shadow-lg ring-1 ring-(--slate)/20">
           <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-(--dark-teal)">
             Usuários do grupo
           </p>
