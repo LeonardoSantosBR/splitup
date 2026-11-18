@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { motion } from "motion/react";
 import { deleteExpense, listGroupExpenses } from "@/app/actions/expenses";
 import { showDeleteExpenseConfirmation } from "@/components/alerts";
 import { Pagination } from "@/components/pagination";
@@ -66,8 +67,11 @@ export function GroupExpensesList({
         ) : (
           <div className="mt-4 space-y-3">
             {expenses.map((expense) => (
-              <article
+              <motion.article
                 key={expense.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35 }}
                 className="rounded-2xl bg-white p-5 shadow-sm"
               >
                 <div className="flex justify-between gap-4">
@@ -93,7 +97,7 @@ export function GroupExpensesList({
                     </button>
                   </div>
                 </div>
-              </article>
+              </motion.article>
             ))}
           </div>
         )}

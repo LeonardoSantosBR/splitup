@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { HomeGroupProps } from "@/types/home";
 import { HomeMembersImage } from "./HomeMembersImage";
+import { AnimatedReveal } from "@/components/animation";
 
 export function HomeGroupCards({
   groups,
@@ -11,7 +12,8 @@ export function HomeGroupCards({
 }) {
   return (
     <div className="mt-4 grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {groups.map((group) => (
+      {groups.map((group, index) => (
+        <AnimatedReveal key={group.id} delay={Math.min(index * 0.06, 0.3)}>
         <article
           key={group.id}
           className="flex h-full min-w-0 min-h-28 flex-col rounded-2xl bg-white p-4 shadow-sm ring-1 ring-(--slate)/15 sm:p-5"
@@ -44,6 +46,7 @@ export function HomeGroupCards({
             Copiar convite
           </button>
         </article>
+        </AnimatedReveal>
       ))}
     </div>
   );

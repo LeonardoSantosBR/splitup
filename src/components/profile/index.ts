@@ -1,1 +1,1 @@
-export * from "./ProfileEditor";
+export * from "./ProfileFieldsEditor";

@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { ProfileEditor } from "@/components/profile";
+import { ProfileFieldsEditor } from "@/components/profile";
 import { prisma } from "@/db/prismaDb";
 
 export default async function ProfilePage() {
@@ -16,7 +16,7 @@ export default async function ProfilePage() {
 
   return (
     <main className="min-h-screen bg-background px-4 py-8 sm:px-6 sm:py-10">
-      <ProfileEditor
+      <ProfileFieldsEditor
         profile={{
           name: user.name ?? "",
           email: user.email ?? "",

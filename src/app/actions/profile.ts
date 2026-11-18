@@ -2,20 +2,15 @@
 
 import { AuthUserSessionAuth } from "@/auth/auth";
 import { prisma } from "@/db/prismaDb";
+import { UserProfileProps } from "@/types";
 import type { ActionResultProps } from "@/types/actionResultProps";
 import { errorMessage } from "@/utils/functions/errorMessageFunction";
 import { validationErrors } from "@/utils/functions/validationErrorsFunction";
 import { updateUserProfileSchema } from "@/utils/schemas/userSchema";
 
-export type UserProfile = {
-  name: string;
-  email: string;
-  image: string | null;
-};
-
 export async function updateUserProfile(
-  input: unknown,
-): Promise<ActionResultProps<UserProfile>> {
+  input: unknown
+): Promise<ActionResultProps<UserProfileProps>> {
   const parsed = updateUserProfileSchema.safeParse(input);
   if (!parsed.success)
     return { success: false, fieldErrors: validationErrors(parsed.error) };

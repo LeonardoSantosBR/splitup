@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { motion } from "motion/react";
 import type { GroupSettlementsProps } from "@/types";
 import { formatCents } from "@/utils/functions/formatCentsFunction";
 
@@ -23,8 +24,11 @@ export function GroupSettlements({
       ) : (
         <div className="mt-4 space-y-3">
           {settlements.map((settlement) => (
-            <article
+            <motion.article
               key={`${settlement.fromMemberId}-${settlement.toMemberId}`}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35 }}
               className="flex items-center justify-between gap-4 rounded-2xl bg-white p-5 shadow-sm"
             >
               <p className="text-sm text-foreground">
@@ -34,7 +38,7 @@ export function GroupSettlements({
                   {formatCents(settlement.amountCents)}
                 </span>
               </p>
-            </article>
+            </motion.article>
           ))}
         </div>
       )}
