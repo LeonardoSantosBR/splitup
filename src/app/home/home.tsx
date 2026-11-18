@@ -2,7 +2,7 @@
 
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useCallback, useState, useTransition } from "react";
 import { toast } from "react-toastify";
 import { createGroup, joinGroup, listUserGroups } from "@/app/actions/groups";
 import { HomeGroupCreateOrJoin, HomeGroupList } from "@/components/group";
@@ -86,16 +86,20 @@ export function Home({
     });
   }
 
-  function viewProfile(): void {
+  const viewProfile = useCallback((): void => {
     router.push("/profile");
-  }
+  }, [router]);
+
+  const handleSignOut = useCallback((): void => {
+    void signOut({ callbackUrl: "/login" });
+  }, []);
 
   return (
     <main className="w-full min-w-0 max-w-none flex-1 bg-background">
       <Header
         userName={userName}
         userImage={userImage}
-        onSignOut={() => signOut({ callbackUrl: "/login" })}
+        onSignOut={handleSignOut}
         onViewProfile={viewProfile}
       />
       <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-8 sm:px-6 sm:py-10">

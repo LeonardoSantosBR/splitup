@@ -1,10 +1,11 @@
 "use client";
 
 import Avatar from "@mui/material/Avatar";
+import { memo } from "react";
 import type { HeaderProps } from "@/types";
 import { HeaderBrand } from "./HeaderBrand";
 
-export function Header({
+export const Header = memo(function Header({
   userName,
   userImage,
   onSignOut,
@@ -46,4 +47,4 @@ export function Header({
       </div>
     </header>
   );
-}
+});
