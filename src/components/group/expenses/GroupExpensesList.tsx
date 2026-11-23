@@ -106,7 +106,7 @@ export function GroupExpensesList({
             page={page}
             totalPages={totalPages}
             isPending={isPending}
-            onPageChange={changePage}
+            onChangePage={changePage}
           />
         )}
       </section>

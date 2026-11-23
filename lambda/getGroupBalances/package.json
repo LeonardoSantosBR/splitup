@@ -1,0 +1,8 @@
+{
+  "name": "splitup-get-group-balances",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  }
+}

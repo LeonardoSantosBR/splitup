@@ -1,48 +1,41 @@
 "use server";
 
 import { AuthUserGroupMember } from "@/auth/auth";
-import { prisma } from "@/db/prismaDb";
 import type { ActionResultProps, GroupBalancesProps } from "@/types";
-import { assertBalancesSumToZero } from "@/utils/domain/balancesDomain";
-import { calculateGroupBalances } from "@/utils/domain/groupFinancialDomain";
 import { cents } from "@/utils/domain/moneyDomain";
 import { errorMessage } from "@/utils/functions/errorMessageFunction";
 
 export async function getGroupBalances(
-  groupId: string,
+  groupId: string
 ): Promise<ActionResultProps<GroupBalancesProps>> {
   try {
     await AuthUserGroupMember(groupId);
-    const group = await prisma.group.findUnique({
-      where: { id: groupId },
-      include: {
-        members: { include: { user: true } },
-        expenses: { include: { shares: true } },
-        settlements: true,
-      },
-    });
-    if (!group) return { success: false, formError: "Grupo não encontrado." };
+    const lambdaUrl = process.env.BALANCES_LAMBDA_URL;
+    const lambdaToken = process.env.LAMBDA_INTERNAL_TOKEN;
 
-    const balances = calculateGroupBalances(
-      group.expenses.map((expense) => ({
-        payerId: expense.payerId,
-        shares: new Map(
-          expense.shares.map((share) => [
-            share.memberId,
-            cents(share.amountCents),
-          ]),
-        ),
-      })),
-      group.settlements,
-    );
-    assertBalancesSumToZero(balances);
+    if (!lambdaUrl || !lambdaToken)
+      throw new Error("Balances Lambda environment is not configured");
+
+    const url = new URL(lambdaUrl);
+    url.searchParams.set("groupId", groupId);
+    const response = await fetch(url, {
+      headers: { "x-internal-token": lambdaToken },
+      cache: "no-store",
+    });
+
+    if (response.status === 404)
+      return { success: false, formError: "Grupo não encontrado." };
+    if (!response.ok)
+      throw new Error(`Balances Lambda returned ${response.status}`);
+
+    const result = (await response.json()) as GroupBalancesProps;
+
     return {
       success: true,
       data: {
-        balances: group.members.map(({ user }) => ({
-          memberId: user.id,
-          memberName: user.name ?? user.email ?? "Membro",
-          amountCents: balances.get(user.id) ?? cents(0),
+        balances: result.balances.map((balance) => ({
+          ...balance,
+          amountCents: cents(balance.amountCents),
         })),
       },
     };
