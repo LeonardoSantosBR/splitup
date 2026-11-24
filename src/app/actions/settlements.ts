@@ -3,52 +3,39 @@
 import { AuthUserGroupMember } from "@/auth/auth";
 import { prisma } from "@/db/prismaDb";
 import type { ActionResultProps, GroupSettlementsProps } from "@/types";
-import { calculateGroupBalances } from "@/utils/domain/groupFinancialDomain";
 import { cents } from "@/utils/domain/moneyDomain";
-import { simplifyDebts } from "@/utils/domain/settlementsDomain";
 import { errorMessage } from "@/utils/functions/errorMessageFunction";
 
 export async function getGroupSettlements(
-  groupId: string,
+  groupId: string
 ): Promise<ActionResultProps<GroupSettlementsProps>> {
   try {
     await AuthUserGroupMember(groupId);
-    const group = await prisma.group.findUnique({
-      where: { id: groupId },
-      include: {
-        members: { include: { user: true } },
-        expenses: { include: { shares: true } },
-        settlements: true,
-      },
+    const lambdaUrl = process.env.SETTLEMENTS_LAMBDA_URL;
+    const lambdaToken = process.env.LAMBDA_INTERNAL_TOKEN;
+
+    if (!lambdaUrl || !lambdaToken)
+      throw new Error("Settlements Lambda environment is not configured");
+
+    const url = new URL(lambdaUrl);
+    url.searchParams.set("groupId", groupId);
+    const response = await fetch(url, {
+      headers: { "x-internal-token": lambdaToken },
+      cache: "no-store",
     });
-    if (!group) return { success: false, formError: "Grupo não encontrado." };
-    const balances = calculateGroupBalances(
-      group.expenses.map((expense) => ({
-        payerId: expense.payerId,
-        shares: new Map(
-          expense.shares.map((share) => [
-            share.memberId,
-            cents(share.amountCents),
-          ]),
-        ),
-      })),
-      group.settlements,
-    );
-    const names = new Map(
-      group.members.map(({ user }) => [
-        user.id,
-        user.name ?? user.email ?? "Membro",
-      ]),
-    );
+
+    if (response.status === 404)
+      return { success: false, formError: "Grupo não encontrado." };
+    if (!response.ok)
+      throw new Error(`Settlements Lambda returned ${response.status}`);
+
+    const result = (await response.json()) as GroupSettlementsProps;
     return {
       success: true,
       data: {
-        settlements: simplifyDebts(balances).map((settlement) => ({
-          fromMemberId: settlement.fromMemberId,
-          fromMemberName: names.get(settlement.fromMemberId) ?? "Membro",
-          toMemberId: settlement.toMemberId,
-          toMemberName: names.get(settlement.toMemberId) ?? "Membro",
-          amountCents: settlement.amount,
+        settlements: result.settlements.map((settlement) => ({
+          ...settlement,
+          amountCents: cents(settlement.amountCents),
         })),
       },
     };
