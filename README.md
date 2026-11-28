@@ -1,20 +1,20 @@
 # SplitUp
 
-Aplicação web para dividir despesas em grupos, acompanhar saldos e simplificar dívidas.
+Web application for splitting expenses in groups, tracking balances, and simplifying debts.
 
 <img width="828" height="301" alt="Gemini_Generated_Image_881wd5881wd5881w-removebg-preview" src="https://github.com/user-attachments/assets/56593d2c-45b9-444f-ad4f-42607a1e6066" />
 
 ## Stack
 
-- Next.js com App Router, React e TypeScript strict
+- Next.js with App Router, React, and strict TypeScript
 - Tailwind CSS
-- Prisma + PostgreSQL (a ser configurado na próxima etapa)
-- Vitest, Testing Library e Playwright
-- Biome para lint e formatação
+- Prisma + PostgreSQL (to be configured in the next stage)
+- Vitest, Testing Library, and Playwright
+- Biome for linting and formatting
 
-## Desenvolvimento
+## Development
 
-Requisitos: Node.js e pnpm.
+Requirements: Node.js and pnpm.
 
 ```bash
 pnpm install
@@ -22,43 +22,44 @@ Copy-Item .env.example .env.local
 pnpm dev
 ```
 
-Abra [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000).
 
-## Comandos
+## Commands
 
 ```bash
-pnpm lint       # verifica lint e formatação
-pnpm format     # formata os arquivos
-pnpm typecheck  # verifica TypeScript
-pnpm test       # testes unitários e de componentes
-pnpm test:e2e   # testes Playwright
-pnpm build      # build de produção
-pnpm prisma:validate # valida o schema Prisma
-pnpm prisma:generate # gera o cliente Prisma
-pnpm prisma:migrate  # cria/aplica uma migration local
+pnpm lint       # checks linting and formatting
+pnpm format     # formats the files
+pnpm typecheck  # checks TypeScript
+pnpm test       # unit and component tests
+pnpm test:e2e   # Playwright tests
+pnpm build      # production build
+pnpm prisma:validate # validates the Prisma schema
+pnpm prisma:generate # generates the Prisma client
+pnpm prisma:migrate  # creates/applies a local migration
 ```
 
-## Estrutura
+## Structure
 
 ```text
 src/
-  app/                 # rotas, layouts e server actions
-  components/          # componentes reutilizáveis
-  lib/domain/          # regras financeiras puras
-  lib/db/              # acesso ao banco
-  lib/validation/      # schemas compartilhados
-  tests/               # setup e testes E2E
+  app/                 # routes, layouts, and server actions
+  components/          # reusable components
+  lib/domain/          # pure financial rules
+  lib/db/              # database access
+  lib/validation/      # shared schemas
+  tests/               # setup and E2E tests
+lambda/                # AWS Lambda functions
 ```
 
-Valores monetários devem ser armazenados e calculados como inteiros em centavos. Consulte `AGENTS.md` para as regras completas do projeto.
+Monetary values must be stored and calculated as integer cents. See `AGENTS.md` for the project's complete rules.
 
-## Autenticação
+## Authentication
 
-O projeto usa Auth.js com Google OAuth. Configure `AUTH_SECRET`, `AUTH_GOOGLE_ID` e `AUTH_GOOGLE_SECRET` no `.env.local`. No Google Cloud Console, adicione `http://localhost:3000/api/auth/callback/google` como URI de redirecionamento durante o desenvolvimento.
+The project uses Auth.js with Google OAuth. Configure `AUTH_SECRET`, `AUTH_GOOGLE_ID`, and `AUTH_GOOGLE_SECRET` in `.env.local`. In the Google Cloud Console, add `http://localhost:3000/api/auth/callback/google` as a redirect URI during development.
 
-## Banco de dados
+## Database
 
-Copie `.env.example` para `.env.local`, configure `DATABASE_URL` e execute:
+Copy `.env.example` to `.env.local`, configure `DATABASE_URL`, and run:
 
 ```bash
 pnpm prisma:validate
