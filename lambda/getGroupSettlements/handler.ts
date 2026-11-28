@@ -3,7 +3,7 @@ import type {
   LambdaEventProps,
   LambdaResponseProps,
 } from "../types";
-import { response } from "../functions/responseFunction";
+import { lambdaResponseFunction } from "../functions/lambdaResponseFunction";
 import { prisma } from "../../src/db/prismaDb";
 import { assertBalancesSumToZero } from "../../src/utils/domain/balancesDomain";
 import { calculateGroupBalances } from "../../src/utils/domain/groupFinancialDomain";
@@ -11,16 +11,17 @@ import { cents } from "../../src/utils/domain/moneyDomain";
 import { simplifyDebts } from "../../src/utils/domain/settlementsDomain";
 
 export async function handler(
-  event: LambdaEventProps,
+  event: LambdaEventProps
 ): Promise<LambdaResponseProps> {
   const expectedToken = process.env.LAMBDA_INTERNAL_TOKEN;
   const receivedToken = event.headers?.["x-internal-token"];
 
   if (!expectedToken || receivedToken !== expectedToken)
-    return response(401, { error: "Unauthorized" });
+    return lambdaResponseFunction(401, { error: "Unauthorized" });
 
   const groupId = event.queryStringParameters?.groupId;
-  if (!groupId) return response(400, { error: "groupId is required" });
+  if (!groupId)
+    return lambdaResponseFunction(400, { error: "groupId is required" });
 
   try {
     const group = (await prisma.group.findUnique({
@@ -32,7 +33,8 @@ export async function handler(
       },
     })) as GroupFinancialDataProps | null;
 
-    if (!group) return response(404, { error: "Group not found" });
+    if (!group)
+      return lambdaResponseFunction(404, { error: "Group not found" });
 
     const balances = calculateGroupBalances(
       group.expenses.map((expense) => ({
@@ -41,10 +43,10 @@ export async function handler(
           expense.shares.map((share) => [
             share.memberId,
             cents(share.amountCents),
-          ]),
+          ])
         ),
       })),
-      group.settlements,
+      group.settlements
     );
 
     assertBalancesSumToZero(balances);
@@ -53,10 +55,10 @@ export async function handler(
       group.members.map(({ user }) => [
         user.id,
         user.name ?? user.email ?? "Membro",
-      ]),
+      ])
     );
 
-    return response(200, {
+    return lambdaResponseFunction(200, {
       settlements: simplifyDebts(balances).map((settlement) => ({
         fromMemberId: settlement.fromMemberId,
         fromMemberName: names.get(settlement.fromMemberId) ?? "Membro",
@@ -67,6 +69,8 @@ export async function handler(
     });
   } catch (error) {
     console.error("getGroupSettlements failed", error);
-    return response(500, { error: "Could not calculate settlements" });
+    return lambdaResponseFunction(500, {
+      error: "Could not calculate settlements",
+    });
   }
 }

@@ -1,8 +1,8 @@
 import type { LambdaResponseProps } from "../types/lambdaResponseProps";
 
-export function response(
+export function lambdaResponseFunction(
   statusCode: number,
-  body: unknown,
+  body: unknown
 ): LambdaResponseProps {
   return {
     statusCode,

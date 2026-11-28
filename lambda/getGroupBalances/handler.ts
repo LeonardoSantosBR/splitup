@@ -1,24 +1,22 @@
-import type {
-  LambdaEventProps,
-  LambdaResponseProps,
-} from "../types";
-import { response } from "../functions/responseFunction";
+import type { LambdaEventProps, LambdaResponseProps } from "../types";
+import { lambdaResponseFunction } from "../functions/lambdaResponseFunction";
 import { prisma } from "../../src/db/prismaDb";
 import { calculateGroupBalances } from "../../src/utils/domain/groupFinancialDomain";
 import { assertBalancesSumToZero } from "../../src/utils/domain/balancesDomain";
 import { cents } from "../../src/utils/domain/moneyDomain";
 
 export async function handler(
-  event: LambdaEventProps,
+  event: LambdaEventProps
 ): Promise<LambdaResponseProps> {
   const expectedToken = process.env.LAMBDA_INTERNAL_TOKEN;
   const receivedToken = event.headers?.["x-internal-token"];
 
   if (!expectedToken || receivedToken !== expectedToken)
-    return response(401, { error: "Unauthorized" });
+    return lambdaResponseFunction(401, { error: "Unauthorized" });
 
   const groupId = event.queryStringParameters?.groupId;
-  if (!groupId) return response(400, { error: "groupId is required" });
+  if (!groupId)
+    return lambdaResponseFunction(400, { error: "groupId is required" });
 
   try {
     const group = await prisma.group.findUnique({
@@ -30,7 +28,8 @@ export async function handler(
       },
     });
 
-    if (!group) return response(404, { error: "Group not found" });
+    if (!group)
+      return lambdaResponseFunction(404, { error: "Group not found" });
 
     const balances = calculateGroupBalances(
       group.expenses.map((expense) => ({
@@ -47,7 +46,7 @@ export async function handler(
 
     assertBalancesSumToZero(balances);
 
-    return response(200, {
+    return lambdaResponseFunction(200, {
       balances: group.members.map(({ user }) => ({
         memberId: user.id,
         memberName: user.name ?? user.email ?? "Membro",
@@ -56,6 +55,8 @@ export async function handler(
     });
   } catch (error) {
     console.error("getGroupBalances failed", error);
-    return response(500, { error: "Could not load group balances" });
+    return lambdaResponseFunction(500, {
+      error: "Could not load group balances",
+    });
   }
 }
